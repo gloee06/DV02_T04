@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A student data visualisation project exploring hospital injury data.">
+  <title>Hospital Injury Data | Data Visualisation Project</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <script src="js/loadData.js" defer></script>
+  <script src="js/charts.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Hospital Injury Data project home">
+      <span class="brand-mark" aria-hidden="true">+</span>
+      <span>FIELDNOTES<span class="brand-dot">.</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#explore">Explore data</a>
+      <a href="#team">Team</a>
+    </nav>
+    <span class="header-tag">COS30045 · DATA VISUALISATION</span>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> A student research project</p>
+        <h1 id="page-title">Understanding<br>hospital <em>injuries.</em></h1>
+        <p class="hero-intro">A visual exploration of hospital injury data. We are preparing the dataset and agreeing on the questions this project will answer.</p>
+        <a class="text-link" href="#explore">See the project draft <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-ring art-ring-one"></div>
+        <div class="art-ring art-ring-two"></div>
+        <div class="art-cross">+</div>
+        <div class="art-caption">DATA<br>IN CONTEXT</div>
+        <div class="art-index">01 / 03</div>
+      </div>
+      <div class="hero-meta"><span>PROJECT STATUS</span><span class="status-pill"><span class="status-dot"></span> In progress</span></div>
+    </section>
+
+    <section class="about section-wrap" id="about" aria-labelledby="about-title">
+      <div class="section-label"><span>01</span> THE PROJECT</div>
+      <div class="about-content">
+        <h2 id="about-title">Good questions<br>start with <em>good data.</em></h2>
+        <div class="about-body">
+          <p>Our team is building a clear, evidence-based view of hospital injury data. Before drawing conclusions, we are checking where the data comes from, what each record represents, and which comparisons are meaningful.</p>
+          <p class="draft-note"><strong>Draft note</strong> The research question, population, and time period will be added after the team completes its data exploration.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="explore section-wrap" id="explore" aria-labelledby="explore-title">
+      <div class="section-label"><span>02</span> DATA EXPLORER</div>
+      <div class="explore-heading">
+        <div>
+          <p class="eyebrow">First look</p>
+          <h2 id="explore-title">Dataset <em>check-in</em></h2>
+        </div>
+        <p class="explore-description">This draft reads a CSV from the project’s <code>data</code> folder. No figures or findings are shown until the team adds and checks the real dataset.</p>
+      </div>
+
+      <div class="data-status" id="data-status" role="status" aria-live="polite">
+        <span class="status-indicator" aria-hidden="true"></span>
+        <span id="data-status-text">Checking for data/injuries.csv…</span>
+      </div>
+
+      <div class="metric-grid" aria-label="Dataset summary">
+        <article class="metric-card"><span class="metric-label">RECORDS</span><strong id="record-count">—</strong><span class="metric-foot">Rows in the selected CSV</span></article>
+        <article class="metric-card"><span class="metric-label">FIELDS</span><strong id="field-count">—</strong><span class="metric-foot">Columns detected</span></article>
+        <article class="metric-card metric-card-wide"><span class="metric-label">AVAILABLE FIELDS</span><div id="field-list" class="field-list"><span class="muted">Waiting for dataset</span></div></article>
+      </div>
+
+      <div class="chart-panel" aria-labelledby="chart-title">
+        <div class="chart-panel-head"><div><p class="eyebrow">Visualisation</p><h3 id="chart-title">First chart coming next</h3></div><span class="chart-index">FIG. 01</span></div>
+        <div class="chart-placeholder" id="chart-placeholder">
+          <div class="placeholder-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <p>We’ll choose a chart after confirming the dataset’s fields, units, and project question.</p>
+        </div>
+        <p class="chart-caption">A placeholder, not a data result. The team will replace it with a reviewed visualisation.</p>
+      </div>
+    </section>
+
+    <section class="team section-wrap" id="team" aria-labelledby="team-title">
+      <div class="section-label"><span>03</span> THE TEAM</div>
+      <div class="team-heading"><h2 id="team-title">Three people,<br><em>one clear story.</em></h2><p>We are sharing the work across project coordination, data preparation, and visualisation.</p></div>
+      <div class="team-grid">
+        <article class="team-card"><span class="team-number">01</span><h3>Gloria</h3><p class="team-role">PROJECT MANAGER</p><p>Coordinates the team, keeps the project plan current, and drafts the page structure and introduction.</p></article>
+        <article class="team-card"><span class="team-number">02</span><h3>Manda</h3><p class="team-role">DATA EXPLORATION</p><p>Checks the dataset source and fields, documents data quality, and prepares the data for analysis.</p></article>
+        <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">+</span><span>FIELDNOTES<span class="brand-dot">.</span></span></a><p>Data Visualisation Design Project · COS30045</p><a class="back-top" href="#top">Back to top ↑</a></footer>
+</body>
+</html>
