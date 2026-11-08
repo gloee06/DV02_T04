@@ -3,3 +3,46 @@
 .data-status.is-ready { color: #315e42; border-color: #cbd9c8; background: #f8fbf6; }
 .data-status.is-error { color: #865040; border-color: #e4cfc8; background: #fffaf8; }
 .chart-placeholder.has-data { border-style: solid; }
+
+
+
+/* Q1 */
+
+#q1-chart {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto 0;
+}
+
+#q1-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#q1-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.q1-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.q1-tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: 9px 12px;
+  background: #222;
+  color: white;
+  border-radius: 5px;
+  font-size: 13px;
+  z-index: 10;
+}

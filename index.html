@@ -7,8 +7,10 @@
   <title>Hospital Injury Data | Data Visualisation Project</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/charts.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
   <script src="js/loadData.js" defer></script>
   <script src="js/charts.js" defer></script>
+  <script src="js/q1.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -84,6 +86,48 @@
         <p class="chart-caption">A placeholder, not a data result. The team will replace it with a reviewed visualisation.</p>
       </div>
     </section>
+
+<section class="section-wrap" id="q1-section"
+         aria-labelledby="q1-title">
+
+  <div class="section-label">
+    <span>Q1</span> HOSPITALISATION TRENDS
+  </div>
+
+  <div class="chart-panel">
+    <div class="chart-panel-head">
+      <div>
+        <p class="eyebrow">2011–2021 | Australia</p>
+        <h2 id="q1-title">
+          Hospitalisation trends by State and Territory
+        </h2>
+      </div>
+      <span class="chart-index">FIG. Q1</span>
+    </div>
+
+    <p>
+      Explore how non-fatal hospitalised road traffic
+      injury counts changed across Australian states
+      and territories between 2011 and 2021.
+    </p>
+
+    <div id="q1-controls"></div>
+
+    <div id="q1-chart"
+         role="group"
+         aria-label="Interactive line chart of annual non-fatal hospitalised road traffic injury counts by Australian state and territory">
+      <p>Loading hospitalisation data...</p>
+    </div>
+
+    <p class="chart-caption">
+      Source: BITRE, Hospitalised Injuries from Road
+      Crashes, September 2023. Reporting changes
+      affect comparisons for Victoria from 2012 and
+      New South Wales from 2017.
+    </p>
+  </div>
+</section>
+
 
     <section class="team section-wrap" id="team" aria-labelledby="team-title">
       <div class="section-label"><span>03</span> THE TEAM</div>
