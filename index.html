@@ -3,147 +3,192 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A student data visualisation project exploring hospital injury data.">
-  <title>Hospital Injury Data | Data Visualisation Project</title>
+  <meta name="description" content="An interactive data story exploring hospitalised road traffic injuries in Australia from 2011 to 2021.">
+  <title>Road injuries, in focus | Data Visualisation Project</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/charts.css">
   <link rel="stylesheet" href="css/q2.css">
+  <link rel="stylesheet" href="css/q4.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
   <script src="js/loadData.js" defer></script>
   <script src="js/charts.js" defer></script>
   <script src="js/q2.js" defer></script>
+  <script src="js/q4.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="Hospital Injury Data project home">
+    <a class="brand" href="#top" aria-label="Road injuries data story home">
       <span class="brand-mark" aria-hidden="true">+</span>
-      <span>FIELDNOTES<span class="brand-dot">.</span></span>
+      <span>ROADNOTES<span class="brand-dot">.</span></span>
     </a>
     <nav class="main-nav" aria-label="Main navigation">
-      <a href="#about">About</a>
-      <a href="#explore">Explore data</a>
-      <a href="#team">Team</a>
+      <a href="#story-map">The story</a>
+      <a href="#question-2">Explore</a>
+      <a href="#about-data">About the data</a>
     </nav>
-    <span class="header-tag">COS30045 · DATA VISUALISATION</span>
+    <span class="header-tag">COS30045 · 2011—2021</span>
   </header>
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> A student research project</p>
-        <h1 id="page-title">Understanding<br>hospital <em>injuries.</em></h1>
-        <p class="hero-intro">A visual exploration of hospital injury data. We are preparing the dataset and agreeing on the questions this project will answer.</p>
-        <a class="text-link" href="#explore">See the project draft <span aria-hidden="true">↓</span></a>
+        <p class="eyebrow"><span class="eyebrow-line"></span> Australia · 2011 to 2021</p>
+        <h1 id="page-title">Road injuries,<br><em>in focus.</em></h1>
+        <p class="hero-intro">A decade of hospitalised road traffic injuries, explored through the people, places and patterns behind the counts.</p>
+        <a class="text-link" href="#story-map">Follow the story <span aria-hidden="true">↓</span></a>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="art-ring art-ring-one"></div>
         <div class="art-ring art-ring-two"></div>
         <div class="art-cross">+</div>
-        <div class="art-caption">DATA<br>IN CONTEXT</div>
-        <div class="art-index">01 / 03</div>
+        <div class="art-caption">COUNTS<br>IN CONTEXT</div>
+        <div class="art-index">01 / 05</div>
       </div>
-      <div class="hero-meta"><span>PROJECT STATUS</span><span class="status-pill"><span class="status-dot"></span> In progress</span></div>
+      <div class="hero-meta"><span>DATA STORY</span><span class="status-pill"><span class="status-dot"></span> Project draft</span></div>
     </section>
 
-    <section class="about section-wrap" id="about" aria-labelledby="about-title">
-      <div class="section-label"><span>01</span> THE PROJECT</div>
-      <div class="about-content">
-        <h2 id="about-title">Good questions<br>start with <em>good data.</em></h2>
-        <div class="about-body">
-          <p>Our team is building a clear, evidence-based view of hospital injury data. Before drawing conclusions, we are checking where the data comes from, what each record represents, and which comparisons are meaningful.</p>
-          <p class="draft-note"><strong>Draft note</strong> The research question, population, and time period will be added after the team completes its data exploration.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="explore section-wrap" id="explore" aria-labelledby="explore-title">
-      <div class="section-label"><span>02</span> DATA EXPLORER</div>
-      <div class="explore-heading">
+    <section class="story-intro section-wrap" id="story-map" aria-labelledby="story-title">
+      <div class="section-label"><span>00</span> THE STORY</div>
+      <div class="story-intro-grid">
         <div>
-          <p class="eyebrow">First look</p>
-          <h2 id="explore-title">Dataset <em>check-in</em></h2>
+          <p class="eyebrow">From national pattern to group detail</p>
+          <h2 id="story-title">What can a decade<br>of data <em>show us?</em></h2>
         </div>
-        <p class="explore-description">This draft reads a CSV from the project’s <code>data</code> folder. No figures or findings are shown until the team adds and checks the real dataset.</p>
-      </div>
-
-      <div class="data-status" id="data-status" role="status" aria-live="polite">
-        <span class="status-indicator" aria-hidden="true"></span>
-        <span id="data-status-text">Checking for data/injuries.csv…</span>
-      </div>
-
-      <div class="metric-grid" aria-label="Dataset summary">
-        <article class="metric-card"><span class="metric-label">RECORDS</span><strong id="record-count">—</strong><span class="metric-foot">Rows in the selected CSV</span></article>
-        <article class="metric-card"><span class="metric-label">FIELDS</span><strong id="field-count">—</strong><span class="metric-foot">Columns detected</span></article>
-        <article class="metric-card metric-card-wide"><span class="metric-label">AVAILABLE FIELDS</span><div id="field-list" class="field-list"><span class="muted">Waiting for dataset</span></div></article>
-      </div>
-
-      <div class="chart-panel" aria-labelledby="chart-title">
-        <div class="chart-panel-head"><div><p class="eyebrow">Visualisation</p><h3 id="chart-title">First chart coming next</h3></div><span class="chart-index">FIG. 01</span></div>
-        <div class="chart-placeholder" id="chart-placeholder">
-          <div class="placeholder-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <p>We’ll choose a chart after confirming the dataset’s fields, units, and project question.</p>
+        <div class="story-intro-copy">
+          <p>This visualisation follows non-fatal road traffic injuries that resulted in hospitalisation across Australian states and territories. It moves from changes over time to differences by sex, road-user group, age and hospital bed-days.</p>
+          <p>Use the charts to compare reported counts and inspect where data is unavailable. Counts describe the number of cases; they are not population-adjusted risk rates.</p>
         </div>
-        <p class="chart-caption">A placeholder, not a data result. The team will replace it with a reviewed visualisation.</p>
+      </div>
+
+      <nav class="story-map" aria-label="Five research questions">
+        <a class="story-step" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
+        <a class="story-step is-ready" href="#question-2"><span>02</span><strong>By sex</strong><small>Male and female</small></a>
+        <a class="story-step" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
+        <a class="story-step is-ready" href="#question-4"><span>04</span><strong>By age</strong><small>Age groups</small></a>
+        <a class="story-step" href="#question-5"><span>05</span><strong>Hospital stays</strong><small>Bed-days</small></a>
+      </nav>
+      <p class="story-map-note"><span class="ready-key" aria-hidden="true"></span>Interactive chart included <span class="planned-key" aria-hidden="true"></span>Storyboard chapter in progress</p>
+    </section>
+
+    <section class="story-chapter planned-chapter section-wrap" id="question-1" aria-labelledby="q1-title">
+      <div class="chapter-rail"><span>01</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">The decade at a glance</p><h2 id="q1-title">Where did hospitalised<br>injuries <em>change?</em></h2></div>
+          <span class="chart-index">QUESTION 01</span>
+        </div>
+        <p class="chapter-question">How did non-fatal hospitalised road traffic injury counts trend across each Australian State and Territory from 2011 to 2021?</p>
+        <div class="story-figure-placeholder">
+          <div class="figure-placeholder-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>One line for each jurisdiction</h3><p>A multi-line trend chart will show annual counts over time, with a jurisdiction selector and notes for reporting changes.</p></div>
+        </div>
       </div>
     </section>
 
-    <section class="team section-wrap" id="team" aria-labelledby="team-title">
-      <div class="section-label"><span>03</span> THE TEAM</div>
-      <div class="team-heading"><h2 id="team-title">Three people,<br><em>one clear story.</em></h2><p>We are sharing the work across project coordination, data preparation, and visualisation.</p></div>
-      <div class="team-grid">
-        <article class="team-card"><span class="team-number">01</span><h3>Gloria</h3><p class="team-role">PROJECT MANAGER</p><p>Coordinates the team, keeps the project plan current, and drafts the page structure and introduction.</p></article>
-        <article class="team-card"><span class="team-number">02</span><h3>Manda</h3><p class="team-role">DATA EXPLORATION</p><p>Checks the dataset source and fields, documents data quality, and prepares the data for analysis.</p></article>
-        <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
+    <section class="story-chapter chart-chapter section-wrap" id="question-2" aria-labelledby="q2-title">
+      <div class="chapter-rail"><span>02</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">A closer look at sex</p><h2 id="q2-title">How did counts differ<br>between <em>males and females?</em></h2></div>
+          <span class="chart-index">QUESTION 02</span>
+        </div>
+        <p class="chapter-question">Compare male and female non-fatal hospitalisation counts across Australian states and territories, and explore how the difference changed over time.</p>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head"><div><p class="eyebrow">2011—2021 · Choose a year</p><h3>Hospitalisation counts by jurisdiction</h3></div><span class="chart-index">FIG. 02</span></div>
+          <div id="q2-controls"></div>
+          <div id="q2-chart" role="group" aria-label="Interactive grouped bar chart comparing male and female hospitalisation counts"><p>Loading sex comparison data…</p></div>
+          <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017.</p>
+        </div>
       </div>
     </section>
 
-    
-<!-- Q2: Gender comparison -->
-<section class="section-wrap" id="q2-section"
-         aria-labelledby="q2-title">
-
-  <div class="section-label">
-    <span>Q2</span> GENDER COMPARISON
-  </div>
-
-  <div class="chart-panel">
-    <div class="chart-panel-head">
-      <div>
-        <p class="eyebrow">2011–2021 | Australia</p>
-        <h2 id="q2-title">
-          Male vs Female Hospitalisation Counts
-        </h2>
+    <section class="story-chapter planned-chapter section-wrap" id="question-3" aria-labelledby="q3-title">
+      <div class="chapter-rail"><span>03</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">Who is involved?</p><h2 id="q3-title">Which road users account<br>for the <em>largest counts?</em></h2></div>
+          <span class="chart-index">QUESTION 03</span>
+        </div>
+        <p class="chapter-question">Which road-user groups account for the largest hospitalised injury counts in each jurisdiction, and how did their counts and shares change between 2011 and 2021?</p>
+        <div class="story-figure-placeholder">
+          <div class="figure-placeholder-art figure-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>Compare group counts and shares</h3><p>A ranked comparison will pair 2011 and 2021 counts with each road-user group’s share, selectable by jurisdiction.</p></div>
+        </div>
       </div>
-      <span class="chart-index">FIG. Q2</span>
-    </div>
+    </section>
 
-    <p>
-      Compare male and female non-fatal road traffic
-      hospitalisation counts across Australian
-      states and territories. Select a year to
-      explore how the differences changed over time.
-    </p>
+    <!-- Q4 D3 visualisation: the interactive chart containers and IDs are used by js/q4.js. -->
+    <section class="story-chapter chart-chapter section-wrap" id="question-4" aria-labelledby="q4-title">
+      <div class="chapter-rail"><span>04</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">Age changes the picture</p><h2 id="q4-title">How did injury counts<br>vary by <em>age?</em></h2></div>
+          <span class="chart-index">QUESTION 04</span>
+        </div>
+        <p class="chapter-question">Explore how hospitalised injury counts were distributed across age groups in each jurisdiction, and which groups changed most between 2011 and 2021.</p>
 
-    <div id="q2-controls"></div>
+        <div class="q4-controls">
+          <label for="q4-jurisdiction">Choose a jurisdiction</label>
+          <select id="q4-jurisdiction" aria-controls="q4-heatmap q4-dumbbell"></select>
+          <p class="q4-control-note">Only complete 2011 and 2021 values are compared.</p>
+        </div>
+        <p id="q4-change-summary" class="q4-summary-card" aria-live="polite"></p>
 
-    <div id="q2-chart"
-         role="group"
-         aria-label="Interactive grouped bar chart comparing male and female hospitalisation counts">
-      <p>Loading gender comparison data...</p>
-    </div>
+        <article class="q4-chart-panel" aria-labelledby="q4-heatmap-title">
+          <div class="chart-panel-head"><div><h3 id="q4-heatmap-title" class="q4-chart-title">Annual counts by age group</h3><p class="q4-chart-subtitle">Each cell shows a full-year count. The shared colour scale supports comparison across jurisdictions.</p></div><span class="chart-index">2011—2021</span></div>
+          <div id="q4-heatmap-tooltip" class="q4-tooltip" role="status" aria-live="polite"></div>
+          <div id="q4-heatmap" aria-label="Heatmap of age-group counts by year"></div>
+          <div class="q4-legend" aria-label="Heatmap key"><span class="q4-legend-item"><span class="q4-legend-hatch" aria-hidden="true"></span>Not published</span></div>
+          <p id="q4-data-note" class="q4-data-note"></p>
+        </article>
 
-    <p class="chart-caption">
-      Source: BITRE, Hospitalised Injuries from Road
-      Crashes, September 2023. Reporting changes
-      affect comparisons for Victoria from 2012
-      and New South Wales from 2017.
-    </p>
-  </div>
-</section>
+        <article class="q4-chart-panel" aria-labelledby="q4-dumbbell-title">
+          <div class="chart-panel-head"><div><h3 id="q4-dumbbell-title" class="q4-chart-title">Which age groups changed most?</h3><p class="q4-chart-subtitle">Dots compare 2011 with 2021. The right column shows the signed difference in cases; the axis adjusts to the selected jurisdiction.</p></div><span class="chart-index">2011 vs 2021</span></div>
+          <div class="q4-legend" aria-label="Dumbbell chart key">
+            <span class="q4-legend-item"><span class="q4-legend-dot" aria-hidden="true"></span>2011</span>
+            <span class="q4-legend-item"><span class="q4-legend-dot q4-legend-dot-end" aria-hidden="true"></span>2021</span>
+            <span class="q4-legend-item"><span class="q4-legend-line" aria-hidden="true"></span>Change between years</span>
+          </div>
+          <div id="q4-dumbbell-tooltip" class="q4-tooltip" role="status" aria-live="polite"></div>
+          <div id="q4-dumbbell" aria-label="Dumbbell comparison of 2011 and 2021 counts by age group"></div>
+          <p class="q4-source-note">Counts are absolute numbers of hospitalised cases, not population-adjusted rates. n.p. means “not for publication” in the source workbook. Unavailable values are not zero.</p>
+        </article>
+        <p id="q4-status" role="status" aria-live="polite">Loading age-group data…</p>
+        <p class="chart-caption">Source: BITRE, <em>State and territory hospitalisation injury publication 2023</em>. An annual value is withheld if either half-year count is not published.</p>
+      </div>
+    </section>
 
+    <section class="story-chapter planned-chapter section-wrap" id="question-5" aria-labelledby="q5-title">
+      <div class="chapter-rail"><span>05</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">The hospital stay</p><h2 id="q5-title">How did hospital<br>bed-days <em>change?</em></h2></div>
+          <span class="chart-index">QUESTION 05</span>
+        </div>
+        <p class="chapter-question">How did total bed-days and average bed-days per hospitalised case change across jurisdictions from 2011 to 2021?</p>
+        <div class="story-figure-placeholder">
+          <div class="figure-placeholder-art figure-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>Total days and average stay</h3><p>A paired view will show total bed-days alongside average bed-days per case, keeping the two measures and their units distinct.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-data section-wrap" id="about-data" aria-labelledby="about-data-title">
+      <div class="section-label"><span>↳</span> READING THE DATA</div>
+      <div class="about-data-grid">
+        <div><p class="eyebrow">Definitions · limits · source</p><h2 id="about-data-title">Counts need<br><em>context.</em></h2></div>
+        <div class="about-data-copy">
+          <p>The project uses Australian state and territory hospitalisation data for non-fatal road traffic injuries from 2011 to 2021. Figures are counts of cases and bed-days as reported in the source, not rates adjusted for population or travel exposure.</p>
+          <p>Some small counts are marked <strong>n.p.</strong> (“not for publication”) in the source. These values are unavailable, not zero. Question 4 therefore compares annual age-group totals only when both half-year values are published.</p>
+          <p class="source-box"><strong>Source</strong> Bureau of Infrastructure and Transport Research Economics (BITRE), <em>State and territory hospitalisation injury publication 2023</em>. See the project’s <a href="data/README.md">data notes</a> for processing details.</p>
+        </div>
+      </div>
+      <div class="closing-note"><span class="closing-mark" aria-hidden="true">+</span><p>Observed patterns describe the published data. They do not, by themselves, explain why counts changed.</p></div>
+    </section>
   </main>
 
-  <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">+</span><span>FIELDNOTES<span class="brand-dot">.</span></span></a><p>Data Visualisation Design Project · COS30045</p><a class="back-top" href="#top">Back to top ↑</a></footer>
+  <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">+</span><span>ROADNOTES<span class="brand-dot">.</span></span></a><p>Data Visualisation Design Project · COS30045</p><a class="back-top" href="#top">Back to top ↑</a></footer>
 </body>
 </html>
