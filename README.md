@@ -4,7 +4,7 @@ An in-progress data visualisation project by Gloria, Manda, and Yathu.
 
 ## Project status
 
-This repository contains the initial website draft. The team still needs to confirm the research question, dataset source, date range, and measures before adding findings or charts.
+The website is organised as a five-question data story. Questions 2 and 4 currently have interactive charts; Questions 1, 3, and 5 are storyboard sections awaiting their processed data and agreed visualisations. Review findings with the team before presenting them.
 
 ## Team and first tasks
 
@@ -16,18 +16,18 @@ This repository contains the initial website draft. The team still needs to conf
 
 ## Project structure
 
-- `index.html` - project page and dashboard draft
-- `css/` - page and chart styles
+- `index.html` - five-question story structure, chart sections, and source notes
+- `css/` - shared page styles and question-specific chart styles
 - `js/` - CSV loading and visualisation code
-- `data/` - project dataset and its documentation
+- `data/` - processed CSV files and their documentation
 
 ## Run locally
 
-The page loads its CSV with `fetch`, so open the project through a local web server (for example, VS Code Live Server or XAMPP), not by opening `index.html` as a `file://` URL. The expected draft data path is `data/injuries.csv`.
+The page loads CSV files with `fetch`, so open the project through a local web server (for example, VS Code Live Server or XAMPP), not by opening `index.html` as a `file://` URL. Questions 2 and 4 read `data/q2_gender_comparison.csv` and `data/q4_age_jurisdiction_annual.csv` respectively.
 
 ## Before analysis
 
-Add the dataset source and licence/usage notes to `data/README.md`. Agree as a team on the research question, date range, unit of analysis, and which columns represent counts or categories. Do not present placeholder values as findings.
+Review the source, processing, and missing-data notes in `data/README.md`. In the Q4 CSV, a blank `annual_cases` value means at least one half-year count was not published. Treat it as unavailable, not zero. Compare 2011 with 2021 only where both values are available. These are counts, not population-adjusted rates.
 
 ## Git workflow
 
