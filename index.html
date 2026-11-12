@@ -12,8 +12,9 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
   <script src="js/loadData.js" defer></script>
   <script src="js/charts.js" defer></script>
+  <script src="js/q1.js" defer></script>
   <script src="js/q2.js" defer></script>
-  <script src="js/q4.js" defer></script>
+  
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -160,18 +161,55 @@
       </div>
     </section>
 
-    <section class="story-chapter planned-chapter section-wrap" id="question-5" aria-labelledby="q5-title">
-      <div class="chapter-rail"><span>05</span><span class="rail-line"></span><span>05</span></div>
-      <div class="chapter-content">
-        <div class="chapter-heading">
-          <div><p class="eyebrow">The hospital stay</p><h2 id="q5-title">How did hospital<br>bed-days <em>change?</em></h2></div>
-          <span class="chart-index">QUESTION 05</span>
-        </div>
-        <p class="chapter-question">How did total bed-days and average bed-days per hospitalised case change across jurisdictions from 2011 to 2021?</p>
-        <div class="story-figure-placeholder">
-          <div class="figure-placeholder-art figure-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>Total days and average stay</h3><p>A paired view will show total bed-days alongside average bed-days per case, keeping the two measures and their units distinct.</p></div>
-        </div>
+<section class="section-wrap" id="q1-section"
+         aria-labelledby="q1-title">
+
+  <div class="section-label">
+    <span>Q1</span> HOSPITALISATION TRENDS
+  </div>
+
+  <div class="chart-panel">
+    <div class="chart-panel-head">
+      <div>
+        <p class="eyebrow">2011–2021 | Australia</p>
+        <h2 id="q1-title">
+          Hospitalisation trends by State and Territory
+        </h2>
+      </div>
+      <span class="chart-index">FIG. Q1</span>
+    </div>
+
+    <p>
+      Explore how non-fatal hospitalised road traffic
+      injury counts changed across Australian states
+      and territories between 2011 and 2021.
+    </p>
+
+    <div id="q1-controls"></div>
+
+    <div id="q1-chart"
+         role="group"
+         aria-label="Interactive line chart of annual non-fatal hospitalised road traffic injury counts by Australian state and territory">
+      <p>Loading hospitalisation data...</p>
+    </div>
+
+    <p class="chart-caption">
+      Source: BITRE, Hospitalised Injuries from Road
+      Crashes, September 2023. Reporting changes
+      affect comparisons for Victoria from 2012 and
+      New South Wales from 2017.
+    </p>
+  </div>
+</section>
+
+
+    <section class="team section-wrap" id="team" aria-labelledby="team-title">
+      <div class="section-label"><span>03</span> THE TEAM</div>
+      <div class="team-heading"><h2 id="team-title">Three people,<br><em>one clear story.</em></h2><p>We are sharing the work across project coordination, data preparation, and visualisation.</p></div>
+      <div class="team-grid">
+        <article class="team-card"><span class="team-number">01</span><h3>Gloria</h3><p class="team-role">PROJECT MANAGER</p><p>Coordinates the team, keeps the project plan current, and drafts the page structure and introduction.</p></article>
+        <article class="team-card"><span class="team-number">02</span><h3>Manda</h3><p class="team-role">DATA EXPLORATION</p><p>Checks the dataset source and fields, documents data quality, and prepares the data for analysis.</p></article>
+        <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
       </div>
     </section>
 
