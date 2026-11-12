@@ -7,10 +7,13 @@
   <title>Hospital Injury Data | Data Visualisation Project</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/charts.css">
+  <link rel="stylesheet" href="css/q2.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
   <script src="js/loadData.js" defer></script>
   <script src="js/charts.js" defer></script>
   <script src="js/q1.js" defer></script>
+  <script src="js/q2.js" defer></script>
+  
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -138,6 +141,51 @@
         <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
       </div>
     </section>
+
+    
+<!-- Q2: Gender comparison -->
+<section class="section-wrap" id="q2-section"
+         aria-labelledby="q2-title">
+
+  <div class="section-label">
+    <span>Q2</span> GENDER COMPARISON
+  </div>
+
+  <div class="chart-panel">
+    <div class="chart-panel-head">
+      <div>
+        <p class="eyebrow">2011–2021 | Australia</p>
+        <h2 id="q2-title">
+          Male vs Female Hospitalisation Counts
+        </h2>
+      </div>
+      <span class="chart-index">FIG. Q2</span>
+    </div>
+
+    <p>
+      Compare male and female non-fatal road traffic
+      hospitalisation counts across Australian
+      states and territories. Select a year to
+      explore how the differences changed over time.
+    </p>
+
+    <div id="q2-controls"></div>
+
+    <div id="q2-chart"
+         role="group"
+         aria-label="Interactive grouped bar chart comparing male and female hospitalisation counts">
+      <p>Loading gender comparison data...</p>
+    </div>
+
+    <p class="chart-caption">
+      Source: BITRE, Hospitalised Injuries from Road
+      Crashes, September 2023. Reporting changes
+      affect comparisons for Victoria from 2012
+      and New South Wales from 2017.
+    </p>
+  </div>
+</section>
+
   </main>
 
   <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">+</span><span>FIELDNOTES<span class="brand-dot">.</span></span></a><p>Data Visualisation Design Project · COS30045</p><a class="back-top" href="#top">Back to top ↑</a></footer>
