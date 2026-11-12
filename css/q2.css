@@ -1,0 +1,57 @@
+
+/* Q2: Gender Comparison */
+
+#q2-chart {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto 0;
+}
+
+#q2-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#q2-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+#q2-year {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.q2-legend {
+  display: flex;
+  gap: 18px;
+  margin-left: 12px;
+  font-size: 14px;
+}
+
+.q2-tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: 9px 12px;
+  background: #222;
+  color: white;
+  border-radius: 5px;
+  font-size: 13px;
+  z-index: 10;
+}
+
+.q2-bar {
+  cursor: pointer;
+}
+
+.q2-bar:focus {
+  stroke: #111;
+  stroke-width: 2px;
+}
