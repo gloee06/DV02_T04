@@ -8,7 +8,6 @@ async function drawQ2Chart() {
   if (container.empty() || controls.empty()) return;
 
   try {
-    // Load the dataset in KNIME
     const data = await d3.csv("data/q2_gender_comparison.csv", d => ({
       year: +d.year,
       sex: d.sex.trim(),
@@ -16,63 +15,87 @@ async function drawQ2Chart() {
       cases: +d.nonfatal_cases
     }));
 
-    if (!data.length || data.some(d =>
-      !Number.isFinite(d.year) ||
-      !Number.isFinite(d.cases)
-    )) {
+    if (!data.length || data.some(d => !Number.isFinite(d.year) || !Number.isFinite(d.cases))) {
       throw new Error("Invalid Q2 dataset.");
     }
 
-    const width = 900;
-    const height = 520;
-    const margin = { top: 25, right: 35, bottom: 65, left: 85 };
+    const width = 950;
+    const height = 540;
+    const margin = { top: 30, right: 40, bottom: 70, left: 90 };
 
     const colours = {
       Male: "#3978A8",
       Female: "#CC7546"
     };
 
+    const maxCases = d3.max(data, d => d.cases);
+
     const x = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.cases)])
+      .domain([-maxCases, maxCases])
       .nice()
       .range([margin.left, width - margin.right]);
 
     const y = d3.scaleBand()
       .domain(q2States)
       .range([margin.top, height - margin.bottom])
-      .padding(0.2);
+      .padding(0.25);
 
-    const ySex = d3.scaleBand()
-      .domain(q2Sexes)
-      .range([0, y.bandwidth()])
-      .padding(0.1);
+    const barHeight = y.bandwidth() * 0.65;
 
-    // Creating the chart
     const svg = container.html("")
       .append("svg")
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("role", "img")
-      .attr("aria-label", "Male and female road traffic hospitalisation counts by jurisdiction");
-
-    svg.append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(7).tickFormat(d3.format(",")));
-
-    svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y));
-
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", height - 15)
-      .attr("text-anchor", "middle")
-      .text("Non-fatal hospitalised injury cases");
+      .attr("aria-label", "Butterfly chart comparing male and female hospitalisation counts by jurisdiction");
 
     const tooltip = container.append("div")
       .attr("class", "q2-tooltip")
       .style("display", "none");
 
-    // year selector
+    // Axes
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(
+        d3.axisBottom(x)
+          .ticks(9)
+          .tickFormat(d => d3.format(",")(Math.abs(d)))
+      );
+
+    svg.append("g")
+      .attr("transform", `translate(${margin.left - 10},0)`)
+      .call(d3.axisLeft(y).tickSize(0))
+      .call(g => g.select(".domain").remove());
+
+    svg.append("line")
+      .attr("x1", x(0))
+      .attr("x2", x(0))
+      .attr("y1", margin.top)
+      .attr("y2", height - margin.bottom)
+      .attr("stroke", "#777")
+      .attr("stroke-width", 1.2);
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", height - 20)
+      .attr("text-anchor", "middle")
+      .text("Non-fatal hospitalised injury cases");
+
+    svg.append("text")
+      .attr("x", x(-maxCases / 2))
+      .attr("y", margin.top - 8)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", "600")
+      .attr("fill", colours.Male)
+      .text("Male");
+
+    svg.append("text")
+      .attr("x", x(maxCases / 2))
+      .attr("y", margin.top - 8)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", "600")
+      .attr("fill", colours.Female)
+      .text("Female");
+
     controls.html("");
 
     controls.append("label")
@@ -99,18 +122,22 @@ async function drawQ2Chart() {
         .text("● " + sex);
     });
 
-    // draw bars
     function updateChart(selectedYear) {
-      const filtered = data.filter(d => d.year === selectedYear);
+      const filtered = data
+        .filter(d => d.year === selectedYear)
+        .map(d => ({
+          ...d,
+          value: d.sex === "Male" ? -d.cases : d.cases
+        }));
 
       svg.selectAll(".q2-bar")
         .data(filtered, d => `${d.jurisdiction}-${d.sex}`)
         .join("rect")
         .attr("class", "q2-bar")
-        .attr("x", x(0))
-        .attr("y", d => y(d.jurisdiction) + ySex(d.sex))
-        .attr("width", d => x(d.cases) - x(0))
-        .attr("height", ySex.bandwidth())
+        .attr("x", d => Math.min(x(0), x(d.value)))
+        .attr("y", d => y(d.jurisdiction) + (y.bandwidth() - barHeight) / 2)
+        .attr("height", barHeight)
+        .attr("width", d => Math.abs(x(d.value) - x(0)))
         .attr("fill", d => colours[d.sex])
         .attr("tabindex", 0)
         .attr("aria-label", d =>
@@ -123,7 +150,6 @@ async function drawQ2Chart() {
         })
         .on("mousemove", event => {
           const bounds = container.node().getBoundingClientRect();
-
           tooltip
             .style("left", `${event.clientX - bounds.left + 12}px`)
             .style("top", `${event.clientY - bounds.top - 35}px`);
