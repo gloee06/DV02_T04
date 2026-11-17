@@ -1,60 +1,125 @@
-/* --- Question 3 Heatmap & Dashboard Styling --- */
-.q3-container {
+/* Q3 Heatmap Visualization Styles */
+#q3-container {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f7f9f6;
-    border: 1px solid #e2e8df;
-    border-radius: 8px;
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 24px;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.q3-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.q3-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.q3-subtitle {
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
 .q3-controls {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
+    gap: 8px;
 }
 
 .q3-controls label {
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #2c3e2d;
-    font-size: 14px;
+    color: #334155;
 }
 
-.q3-controls select {
-    padding: 6px 12px;
-    border-radius: 6px;
+#jurisdiction-select {
+    padding: 8px 14px;
+    font-size: 0.9rem;
     border: 1px solid #cbd5e1;
-    background-color: #ffffff;
-    font-size: 14px;
-    color: #1e293b;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: #0f172a;
     cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#jurisdiction-select:hover,
+#jurisdiction-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+#q3-heatmap {
+    width: 100%;
+    overflow-x: auto;
 }
 
 .heatmap-cell {
-    transition: fill 0.3s ease, stroke 0.15s ease;
+    stroke: #ffffff;
+    stroke-width: 2px;
+    rx: 4px;
+    ry: 4px;
+    transition: opacity 0.15s ease, stroke 0.15s ease;
     cursor: pointer;
 }
 
 .heatmap-cell:hover {
-    stroke: #1e293b;
-    stroke-width: 2px;
+    stroke: #0f172a;
+    stroke-width: 2.5px;
+    opacity: 0.9;
 }
 
-/* Tooltip Styling */
-#q3-heatmap-tooltip {
+.cell-label {
+    font-size: 11px;
+    font-weight: 500;
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.axis text {
+    font-size: 12px;
+    fill: #334155;
+}
+
+.axis path,
+.axis line {
+    display: none;
+}
+
+.q3-tooltip {
     position: absolute;
-    visibility: hidden;
-    background: rgba(30, 41, 59, 0.95);
-    color: #ffffff;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.95);
+    color: #f8fafc;
     padding: 10px 14px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 0.85rem;
     line-height: 1.4;
-    pointer-events: none;
-    z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 1000;
+}
+
+.q3-tooltip strong {
+    color: #38bdf8;
+}
+
+.legend-title {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #475569;
 }
