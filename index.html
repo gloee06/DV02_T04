@@ -16,7 +16,6 @@
   <script src="js/q1.js" defer></script>
   <script src="js/q2.js" defer></script>
   <script src="js/q3.js" defer></script>
-  
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -68,7 +67,7 @@
       <nav class="story-map" aria-label="Five research questions">
         <a class="story-step" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
         <a class="story-step is-ready" href="#question-2"><span>02</span><strong>By sex</strong><small>Male and female</small></a>
-        <a class="story-step" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
+        <a class="story-step is-ready" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
         <a class="story-step is-ready" href="#question-4"><span>04</span><strong>By age</strong><small>Age groups</small></a>
         <a class="story-step" href="#question-5"><span>05</span><strong>Hospital stays</strong><small>Bed-days</small></a>
       </nav>
@@ -107,7 +106,8 @@
       </div>
     </section>
 
-    <section class="story-chapter planned-chapter section-wrap" id="question-3" aria-labelledby="q3-title">
+    <!-- QUESTION 03: Interactive Heatmap Matrix -->
+    <section class="story-chapter chart-chapter section-wrap" id="question-3" aria-labelledby="q3-title">
       <div class="chapter-rail"><span>03</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
         <div class="chapter-heading">
@@ -115,14 +115,24 @@
           <span class="chart-index">QUESTION 03</span>
         </div>
         <p class="chapter-question">Which road-user groups account for the largest hospitalised injury counts in each jurisdiction, and how did their counts and shares change between 2011 and 2021?</p>
-        <div class="story-figure-placeholder">
-          <div class="figure-placeholder-art figure-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>Compare group counts and shares</h3><p>A ranked comparison will pair 2011 and 2021 counts with each road-user group’s share, selectable by jurisdiction.</p></div>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head">
+            <div>
+              <p class="eyebrow">2011—2021 · Choose a jurisdiction</p>
+              <h3>Hospitalisation density by road-user group</h3>
+            </div>
+            <span class="chart-index">FIG. 03</span>
+          </div>
+          <!-- Target container for q3.js heatmap rendering -->
+          <div id="q3-heatmap-chart" role="group" aria-label="Interactive shaded matrix heatmap of road-user groups by calendar year">
+            <p>Loading road-user hospitalisation data…</p>
+          </div>
+          <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Shading density represents injury counts across road-user categories.</p>
         </div>
       </div>
     </section>
 
-    <!-- Q4 D3 visualisation: the interactive chart containers and IDs are used by js/q4.js. -->
+    <!-- Q4 D3 visualisation -->
     <section class="story-chapter chart-chapter section-wrap" id="question-4" aria-labelledby="q4-title">
       <div class="chapter-rail"><span>04</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
@@ -162,48 +172,6 @@
         <p class="chart-caption">Source: BITRE, <em>State and territory hospitalisation injury publication 2023</em>. An annual value is withheld if either half-year count is not published.</p>
       </div>
     </section>
-
-<section class="section-wrap" id="q1-section"
-         aria-labelledby="q1-title">
-
-  <div class="section-label">
-    <span>Q1</span> HOSPITALISATION TRENDS
-  </div>
-
-  <div class="chart-panel">
-    <div class="chart-panel-head">
-      <div>
-        <p class="eyebrow">2011–2021 | Australia</p>
-        <h2 id="q1-title">
-          Hospitalisation trends by State and Territory
-        </h2>
-      </div>
-      <span class="chart-index">FIG. Q1</span>
-    </div>
-
-    <p>
-      Explore how non-fatal hospitalised road traffic
-      injury counts changed across Australian states
-      and territories between 2011 and 2021.
-    </p>
-
-    <div id="q1-controls"></div>
-
-    <div id="q1-chart"
-         role="group"
-         aria-label="Interactive line chart of annual non-fatal hospitalised road traffic injury counts by Australian state and territory">
-      <p>Loading hospitalisation data...</p>
-    </div>
-
-    <p class="chart-caption">
-      Source: BITRE, Hospitalised Injuries from Road
-      Crashes, September 2023. Reporting changes
-      affect comparisons for Victoria from 2012 and
-      New South Wales from 2017.
-    </p>
-  </div>
-</section>
-
 
     <section class="team section-wrap" id="team" aria-labelledby="team-title">
       <div class="section-label"><span>03</span> THE TEAM</div>

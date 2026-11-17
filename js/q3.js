@@ -4,7 +4,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     // Load the unpivoted CSV data exported from KNIME
-    d3.csv("Q3_jurisdiction_roadusers.csv").then(data => {
+    d3.csv("data/q3_jurisdiction_roadusers.csv").then(data => {
         renderQ3Heatmap(data, "q3-heatmap-chart");
     }).catch(error => {
         console.error("Error loading Q3 CSV data:", error);
