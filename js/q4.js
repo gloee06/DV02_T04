@@ -33,9 +33,9 @@
   }
 
   function drawChart(data, jurisdiction) {
-    const width = 900;
+    const width = 960;
     const height = 390;
-    const margin = { top: 48, right: 145, bottom: 54, left: 112 };
+    const margin = { top: 48, right: 150, bottom: 54, left: 112 };
     const plotRight = width - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const byAgeYear = new Map(data.map(d => [`${d.ageGroup}-${d.year}`, d]));
@@ -47,13 +47,17 @@
     });
     const comparablePairs = pairs.filter(d => d.comparable);
     const largest = comparablePairs.reduce((best, d) => !best || Math.abs(d.change) > Math.abs(best.change) ? d : best, null);
+    pairs.sort((a, b) => {
+      if (a.comparable !== b.comparable) return a.comparable ? -1 : 1;
+      return Math.abs(b.change ?? -Infinity) - Math.abs(a.change ?? -Infinity);
+    });
     const maxCases = d3.max(pairs.flatMap(d => [d.start?.cases, d.end?.cases]).filter(Number.isFinite)) || 1;
     const x = d3.scaleLinear().domain([0, maxCases]).nice(5).range([margin.left, plotRight]);
-    const y = d3.scaleBand().domain(ageGroups).range([margin.top, height - margin.bottom]).padding(0.42);
+    const y = d3.scaleBand().domain(pairs.map(d => d.ageGroup)).range([margin.top, height - margin.bottom]).padding(0.32);
     const svg = chartHost.html("").append("svg")
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("role", "img")
-      .attr("aria-label", `Comparison of 2011 and 2021 hospitalised injury counts by age group in ${jurisdiction}.`);
+      .attr("aria-label", `Paired horizontal bars compare 2011 and 2021 hospitalised injury counts by age group in ${jurisdiction}, ranked by absolute change. The count axis starts at zero.`);
 
     svg.append("g").attr("class", "q4-grid")
       .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -75,27 +79,25 @@
 
     const rows = svg.append("g").selectAll("g")
       .data(pairs, d => d.ageGroup).join("g")
-      .attr("class", d => `q4-dumbbell-row${d === largest ? " is-largest" : ""}`)
+      .attr("class", d => `q4-paired-row${d === largest ? " is-largest" : ""}${d.comparable ? "" : " is-incomplete"}`)
       .attr("transform", d => `translate(0,${y(d.ageGroup) + y.bandwidth() / 2})`);
-
-    rows.filter(d => d.comparable).append("line")
-      .attr("class", "q4-dumbbell-connector")
-      .attr("x1", d => x(d.start.cases)).attr("x2", d => x(d.end.cases));
 
     for (const endpoint of ["start", "end"]) {
       const year = endpoint === "start" ? yearStart : yearEnd;
-      const colorClass = endpoint === "start" ? "q4-dumbbell-dot-start" : "q4-dumbbell-dot-end";
-      rows.filter(d => d[endpoint]?.cases != null).append("circle")
-        .attr("class", `q4-dumbbell-dot ${colorClass}`)
-        .attr("cx", d => x(d[endpoint].cases)).attr("r", 7)
-        .attr("tabindex", 0).attr("role", "img")
+      const barClass = endpoint === "start" ? "q4-paired-bar-start" : "q4-paired-bar-end";
+      const offset = endpoint === "start" ? -5 : 5;
+      rows.filter(d => d[endpoint]?.cases != null).append("rect")
+        .attr("class", `q4-paired-bar ${barClass}`)
+        .attr("x", x(0)).attr("y", offset - 4).attr("height", 8)
+        .attr("width", d => Math.max(1, x(d[endpoint].cases) - x(0)))
+        .attr("rx", 2).attr("tabindex", 0).attr("role", "img")
         .attr("aria-label", d => `${jurisdiction}, ${d.ageGroup}, ${year}: ${numberFormat(d[endpoint].cases)} hospitalised cases`)
         .on("mouseenter mousemove", (event, d) => showTooltip(event, `${jurisdiction} · ${d.ageGroup} · ${year}: ${numberFormat(d[endpoint].cases)} cases`))
         .on("mouseleave blur", () => tooltip.classed("is-visible", false))
         .on("focus", (event, d) => showTooltip(event, `${jurisdiction} · ${d.ageGroup} · ${year}: ${numberFormat(d[endpoint].cases)} cases`));
     }
 
-    rows.append("text").attr("class", d => `q4-dumbbell-change${d === largest ? " is-largest" : ""}`)
+    rows.append("text").attr("class", d => `q4-dumbbell-change${d === largest ? " is-largest" : ""}${d.comparable ? "" : " is-missing"}`)
       .attr("x", changeX).attr("y", 4)
       .text(d => d.comparable ? formatSigned(d.change) : "n.p.");
 

@@ -99,8 +99,8 @@
 }
 
 .q4-legend-item { display: inline-flex; align-items: center; gap: 7px; }
-.q4-legend-dot { width: 9px; height: 9px; border-radius: 50%; background: #286b62; }
-.q4-legend-dot-end { background: #cf704b; }
+.q4-legend-dot { width: 9px; height: 9px; border-radius: 50%; background: #8fc5bd; }
+.q4-legend-dot-end { background: #167c75; }
 .q4-legend-line { width: 22px; height: 2px; background: #bec9bf; }
 .q4-legend-hatch {
   width: 15px;
@@ -163,6 +163,12 @@
 .q4-dumbbell-change { fill: #536258; font-family: var(--mono); font-size: 11px; }
 .q4-dumbbell-change.is-largest { fill: #1f593e; font-weight: 700; }
 .q4-dumbbell-row.is-largest .q4-dumbbell-connector { stroke: #2d6449; stroke-width: 5px; }
+.q4-paired-bar { cursor: help; outline: none; }
+.q4-paired-bar-start { fill: #8fc5bd; }
+.q4-paired-bar-end { fill: #167c75; }
+.q4-paired-row.is-largest .q4-dumbbell-change { fill: #1f593e; font-weight: 700; }
+.q4-paired-row.is-incomplete .q4-dumbbell-change { fill: #808a82; font-style: italic; }
+.q4-paired-bar:focus { stroke: #202725; stroke-width: 2px; }
 
 .q4-tooltip {
   position: absolute;
