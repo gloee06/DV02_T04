@@ -66,7 +66,7 @@
       </div>
 
       <nav class="story-map" aria-label="Five research questions">
-        <a class="story-step" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
+        <a class="story-step is-ready" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
         <a class="story-step is-ready" href="#question-2"><span>02</span><strong>By sex</strong><small>Male and female</small></a>
         <a class="story-step is-ready" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
         <a class="story-step is-ready" href="#question-4"><span>04</span><strong>By age</strong><small>Age groups</small></a>
@@ -75,7 +75,7 @@
       <p class="story-map-note"><span class="ready-key" aria-hidden="true"></span>Interactive chart included <span class="planned-key" aria-hidden="true"></span>Storyboard chapter in progress</p>
     </section>
 
-    <section class="story-chapter planned-chapter section-wrap" id="question-1" aria-labelledby="q1-title">
+    <section class="story-chapter chart-chapter section-wrap" id="question-1" aria-labelledby="q1-title">
       <div class="chapter-rail"><span>01</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
         <div class="chapter-heading">
@@ -83,9 +83,17 @@
           <span class="chart-index">QUESTION 01</span>
         </div>
         <p class="chapter-question">How did non-fatal hospitalised road traffic injury counts trend across each Australian State and Territory from 2011 to 2021?</p>
-        <div class="story-figure-placeholder">
-          <div class="figure-placeholder-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>One line for each jurisdiction</h3><p>A multi-line trend chart will show annual counts over time, with a jurisdiction selector and notes for reporting changes.</p></div>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head">
+            <div><p class="eyebrow">2011—2021 · Select jurisdictions</p><h3>Annual hospitalisation trends by state and territory</h3></div>
+            <span class="chart-index">FIG. 01</span>
+          </div>
+          <p class="q1-control-note">Select or clear the jurisdictions below to compare their annual counts.</p>
+          <div id="q1-controls" role="group" aria-label="Select states and territories to show in the Q1 line chart"></div>
+          <div id="q1-chart" role="group" aria-label="Interactive line chart of non-fatal road traffic hospitalisation counts across Australian jurisdictions, 2011 to 2021">
+            <p>Loading jurisdiction trends…</p>
+          </div>
+          <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017. Counts are not population-adjusted rates.</p>
         </div>
       </div>
     </section>
@@ -101,7 +109,7 @@
         <div class="chart-panel story-chart-panel">
           <div class="chart-panel-head"><div><p class="eyebrow">2011—2021 · Choose a year</p><h3>Hospitalisation counts by jurisdiction</h3></div><span class="chart-index">FIG. 02</span></div>
           <div id="q2-controls"></div>
-          <div id="q2-chart" role="group" aria-label="Interactive grouped bar chart comparing male and female hospitalisation counts"><p>Loading sex comparison data…</p></div>
+          <div id="q2-chart" role="group" aria-label="Interactive butterfly chart comparing male and female hospitalisation counts"><p>Loading sex comparison data…</p></div>
           <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017.</p>
         </div>
       </div>
@@ -172,7 +180,7 @@
       <div class="team-grid">
         <article class="team-card"><span class="team-number">01</span><h3>Gloria</h3><p class="team-role">PROJECT MANAGER</p><p>Coordinates the team, keeps the project plan current, and drafts the page structure and introduction.</p></article>
         <article class="team-card"><span class="team-number">02</span><h3>Manda</h3><p class="team-role">DATA EXPLORATION</p><p>Checks the dataset source and fields, documents data quality, and prepares the data for analysis.</p></article>
-        <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
+        <article class="team-card"><span class="team-number">03</span><h3>Yathulan</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
       </div>
     </section>
 
