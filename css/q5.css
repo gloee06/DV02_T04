@@ -1,0 +1,268 @@
+/* q5.css - Styling for Question 5: Australian Road-User Hospitalisation Map (2011-2021) */
+
+:root {
+  --bg-page: #f4f6f9;
+  --bg-card: #ffffff;
+  --bg-subtle: #eef2f6;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent-primary: #0f4c81;
+  --accent-secondary: #0284c7;
+  --border-color: #cbd5e1;
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 6px 18px rgba(15, 23, 42, 0.09);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* Header & Title Block */
+.page-header {
+  max-width: 1280px;
+  margin: 0 auto 20px auto;
+  background-color: var(--bg-card);
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border-left: 5px solid var(--accent-primary);
+}
+
+.page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.page-header p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Main Dashboard Layout */
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Control Panel / Sidebar */
+.controls-panel {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controls-panel h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.control-group select,
+.control-group input[type="range"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background-color: #fff;
+}
+
+.control-group select:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.year-readout {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Map & Visualization Card */
+.map-section {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.map-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+#map,
+.map-canvas {
+  width: 100%;
+  height: 540px;
+  min-height: 420px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Legend Styling */
+.map-legend {
+  background-color: var(--bg-card);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.legend-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.legend-scale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-gradient {
+  flex: 1;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #440154 0%, #21918c 50%, #fde725 100%);
+}
+
+/* Popup / Tooltip Styling */
+.leaflet-popup-content,
+.map-tooltip {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.popup-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent-primary);
+  margin-bottom: 4px;
+}
+
+.popup-stat {
+  margin: 2px 0;
+}
+
+/* Summary Table / Comparison Card */
+.summary-section {
+  max-width: 1280px;
+  margin: 20px auto 0 auto;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.summary-section h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+table.data-table th,
+table.data-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+table.data-table th {
+  background-color: var(--bg-subtle);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+table.data-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.num-col {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+
+  #map,
+  .map-canvas {
+    height: 440px;
+  }
+}
