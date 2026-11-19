@@ -1,0 +1,89 @@
+Jurisdiction,Calendar_year,Cases,BedDays,AvgBedDays
+New South Wales,2011,10618,50344,4.74
+New South Wales,2012,11121,49958,4.49
+New South Wales,2013,11421,47039,4.12
+New South Wales,2014,11313,46040,4.07
+New South Wales,2015,11084,54331,4.9
+New South Wales,2016,11474,60349,5.26
+New South Wales,2017,11016,59514,5.4
+New South Wales,2018,9794,59524,6.08
+New South Wales,2019,9942,62998,6.34
+New South Wales,2020,9274,58371,6.29
+New South Wales,2021,9003,55098,6.12
+Victoria,2011,9326,33924,3.64
+Victoria,2012,8098,30245,3.73
+Victoria,2013,7784,29066,3.73
+Victoria,2014,8523,29025,3.41
+Victoria,2015,9198,50072,5.44
+Victoria,2016,10360,67778,6.54
+Victoria,2017,10794,64054,5.93
+Victoria,2018,11453,63844,5.57
+Victoria,2019,11392,61009,5.36
+Victoria,2020,9884,47937,4.85
+Victoria,2021,11130,54699,4.91
+Queensland,2011,6322,28533,4.51
+Queensland,2012,6813,30414,4.46
+Queensland,2013,7821,29019,3.71
+Queensland,2014,7725,29016,3.76
+Queensland,2015,8306,34270,4.13
+Queensland,2016,8702,39817,4.58
+Queensland,2017,9134,39864,4.36
+Queensland,2018,9381,38839,4.14
+Queensland,2019,9515,40189,4.22
+Queensland,2020,9801,37850,3.86
+Queensland,2021,10447,40889,3.91
+Western Australia,2011,3442,18485,5.37
+Western Australia,2012,3493,17899,5.12
+Western Australia,2013,3475,17226,4.96
+Western Australia,2014,3154,16589,5.26
+Western Australia,2015,3183,18445,5.79
+Western Australia,2016,3031,21902,7.23
+Western Australia,2017,3195,19160,6.0
+Western Australia,2018,3274,15080,4.61
+Western Australia,2019,3534,17822,5.04
+Western Australia,2020,3636,18788,5.17
+Western Australia,2021,3568,22288,6.25
+South Australia,2011,2359,12032,5.1
+South Australia,2012,2311,12433,5.38
+South Australia,2013,2221,11571,5.21
+South Australia,2014,2381,11196,4.7
+South Australia,2015,2467,11167,4.53
+South Australia,2016,2654,13195,4.97
+South Australia,2017,2394,13779,5.76
+South Australia,2018,2489,12658,5.09
+South Australia,2019,2457,10803,4.4
+South Australia,2020,2503,12180,4.87
+South Australia,2021,2632,11852,4.5
+Tasmania,2011,493,3106,6.3
+Tasmania,2012,536,2848,5.31
+Tasmania,2013,570,2891,5.07
+Tasmania,2014,646,2869,4.44
+Tasmania,2015,677,3443,5.09
+Tasmania,2016,657,3964,6.03
+Tasmania,2017,659,4310,6.54
+Tasmania,2018,781,4676,5.99
+Tasmania,2019,708,4080,5.76
+Tasmania,2020,778,3482,4.48
+Tasmania,2021,805,4860,6.04
+Australian Capital Territory,2011,537,2576,4.8
+Australian Capital Territory,2012,601,2266,3.77
+Australian Capital Territory,2013,573,2517,4.39
+Australian Capital Territory,2014,542,2026,3.74
+Australian Capital Territory,2015,700,2896,4.14
+Australian Capital Territory,2016,654,2672,4.09
+Australian Capital Territory,2017,632,2609,4.13
+Australian Capital Territory,2018,712,2984,4.19
+Australian Capital Territory,2019,665,2804,4.22
+Australian Capital Territory,2020,629,2537,4.03
+Australian Capital Territory,2021,740,2739,3.7
+Northern Territory,2011,456,3010,6.6
+Northern Territory,2012,496,2955,5.96
+Northern Territory,2013,561,3661,6.53
+Northern Territory,2014,575,2967,5.16
+Northern Territory,2015,691,3461,5.01
+Northern Territory,2016,709,3793,5.35
+Northern Territory,2017,703,3997,5.69
+Northern Territory,2018,832,5278,6.34
+Northern Territory,2019,656,3809,5.81
+Northern Territory,2020,787,3467,4.41
+Northern Territory,2021,710,4073,5.74

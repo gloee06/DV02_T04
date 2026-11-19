@@ -1,14 +1,14 @@
-/* Question 5: counterparty line chart. Scoped with the q5- prefix. */
-#q5-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0; font-size: 14px; }
-#q5-controls select { padding: 6px 10px; border: 1px solid #cbd9c8; border-radius: 4px; background: #fff; font: inherit; }
+/* Question 5: bed-days line chart. Everything uses the q5- prefix. */
+#q5-controls { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; font-size: 14px; }
+.q5-metric { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; border: 0; }
+.q5-metric label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; }
+.q5-filters { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.q5-filter { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 
 #q5-chart { position: relative; width: 100%; max-width: 900px; margin: 12px auto 0; }
 #q5-chart svg { display: block; width: 100%; height: auto; }
 
-.q5-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 8px; font-size: 13px; }
-.q5-legend-item { display: inline-flex; align-items: center; gap: 6px; }
 .q5-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 4px; }
-
 .q5-grid line { stroke: #e1e6dd; }
 .q5-grid .domain { display: none; }
 .q5-axis-label { font-size: 12px; fill: #5a665d; }
@@ -19,5 +19,13 @@
   background: #222; color: #fff; border-radius: 5px; font-size: 13px; line-height: 1.5; z-index: 5;
 }
 
-#q5-summary { margin: 12px 0 0; font-size: 14px; }
+#q5-summary { margin: 14px 0 0; font-size: 14px; }
+
+.q5-table-wrap { overflow-x: auto; margin-top: 14px; }
+.q5-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.q5-table caption { text-align: left; padding-bottom: 6px; color: #5a665d; }
+.q5-table th, .q5-table td { padding: 6px 8px; border-bottom: 1px solid #e1e6dd; text-align: left; white-space: nowrap; }
+.q5-table th { color: #315e42; font-weight: 700; }
+.q5-table td.q5-num { text-align: right; }
+
 .q5-error { padding: 12px; border: 1px solid #e4cfc8; border-radius: 6px; background: #fffaf8; color: #865040; }
