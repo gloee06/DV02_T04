@@ -1,0 +1,92 @@
+/* Question 3: largest road-user group by jurisdiction (map).
+   Everything is scoped to #q3-heatmap-chart so it cannot affect other sections. */
+
+#q3-heatmap-chart {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto 0;
+}
+
+.q3-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.q3-year-label {
+  min-width: 3.2em;
+  font-weight: 700;
+  font-size: 18px;
+  color: #315e42;
+}
+
+.q3-slider { flex: 1 1 220px; max-width: 360px; accent-color: #315e42; }
+
+.q3-play {
+  padding: 5px 14px;
+  border: 0;
+  border-radius: 4px;
+  background: #d39c54;
+  color: #222;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.q3-play:focus-visible,
+.q3-slider:focus-visible { outline: 2px solid #315e42; outline-offset: 2px; }
+
+/* isolation keeps Leaflet's high z-index panes below the sticky site header */
+.q3-map {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  width: 100%;
+  height: 520px;
+  border: 1px solid #cbd9c8;
+  border-radius: 6px;
+}
+
+.q3-legend {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.q3-legend-bar { width: 160px; height: 10px; margin: 4px 0; }
+.q3-legend-ends { display: flex; justify-content: space-between; }
+
+.q3-summary { margin: 14px 0 6px; font-size: 14px; }
+
+.q3-table-wrap { overflow-x: auto; margin-top: 10px; }
+
+.q3-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.q3-table th,
+.q3-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e1e6dd;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.q3-table th { color: #315e42; font-weight: 700; }
+.q3-table td.q3-num { text-align: right; }
+
+.q3-error {
+  padding: 12px;
+  border: 1px solid #e4cfc8;
+  border-radius: 6px;
+  background: #fffaf8;
+  color: #865040;
+}

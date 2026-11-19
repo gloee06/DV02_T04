@@ -1,0 +1,23 @@
+/* Question 5: counterparty line chart. Scoped with the q5- prefix. */
+#q5-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0; font-size: 14px; }
+#q5-controls select { padding: 6px 10px; border: 1px solid #cbd9c8; border-radius: 4px; background: #fff; font: inherit; }
+
+#q5-chart { position: relative; width: 100%; max-width: 900px; margin: 12px auto 0; }
+#q5-chart svg { display: block; width: 100%; height: auto; }
+
+.q5-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 8px; font-size: 13px; }
+.q5-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.q5-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 4px; }
+
+.q5-grid line { stroke: #e1e6dd; }
+.q5-grid .domain { display: none; }
+.q5-axis-label { font-size: 12px; fill: #5a665d; }
+.q5-guide { stroke: #879088; stroke-dasharray: 3 3; pointer-events: none; }
+
+.q5-tooltip {
+  position: absolute; pointer-events: none; padding: 9px 12px;
+  background: #222; color: #fff; border-radius: 5px; font-size: 13px; line-height: 1.5; z-index: 5;
+}
+
+#q5-summary { margin: 12px 0 0; font-size: 14px; }
+.q5-error { padding: 12px; border: 1px solid #e4cfc8; border-radius: 6px; background: #fffaf8; color: #865040; }

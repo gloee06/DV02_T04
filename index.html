@@ -8,13 +8,18 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/charts.css">
   <link rel="stylesheet" href="css/q2.css">
+  <link rel="stylesheet" href="css/q3.css">
   <link rel="stylesheet" href="css/q4.css">
+  <link rel="stylesheet" href="css/q5.css">
+
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
   <script src="js/loadData.js" defer></script>
   <script src="js/charts.js" defer></script>
   <script src="js/q1.js" defer></script>
   <script src="js/q2.js" defer></script>
-  
+  <script src="js/q3.js" defer></script>
+  <script src="js/q4.js" defer></script>
+  <script src="js/q5.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -64,16 +69,16 @@
       </div>
 
       <nav class="story-map" aria-label="Five research questions">
-        <a class="story-step" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
+        <a class="story-step is-ready" href="#question-1"><span>01</span><strong>Across time</strong><small>Jurisdiction trends</small></a>
         <a class="story-step is-ready" href="#question-2"><span>02</span><strong>By sex</strong><small>Male and female</small></a>
-        <a class="story-step" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
+        <a class="story-step is-ready" href="#question-3"><span>03</span><strong>By road user</strong><small>Counts and shares</small></a>
         <a class="story-step is-ready" href="#question-4"><span>04</span><strong>By age</strong><small>Age groups</small></a>
-        <a class="story-step" href="#question-5"><span>05</span><strong>Hospital stays</strong><small>Bed-days</small></a>
+        <a class="story-step is-ready" href="#question-5"><span>05</span><strong>Hospital stays</strong><small>Bed-days</small></a>
       </nav>
       <p class="story-map-note"><span class="ready-key" aria-hidden="true"></span>Interactive chart included <span class="planned-key" aria-hidden="true"></span>Storyboard chapter in progress</p>
     </section>
 
-    <section class="story-chapter planned-chapter section-wrap" id="question-1" aria-labelledby="q1-title">
+    <section class="story-chapter chart-chapter section-wrap" id="question-1" aria-labelledby="q1-title">
       <div class="chapter-rail"><span>01</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
         <div class="chapter-heading">
@@ -81,9 +86,17 @@
           <span class="chart-index">QUESTION 01</span>
         </div>
         <p class="chapter-question">How did non-fatal hospitalised road traffic injury counts trend across each Australian State and Territory from 2011 to 2021?</p>
-        <div class="story-figure-placeholder">
-          <div class="figure-placeholder-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>One line for each jurisdiction</h3><p>A multi-line trend chart will show annual counts over time, with a jurisdiction selector and notes for reporting changes.</p></div>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head">
+            <div><p class="eyebrow">2011—2021 · Select jurisdictions</p><h3>Annual hospitalisation trends by state and territory</h3></div>
+            <span class="chart-index">FIG. 01</span>
+          </div>
+          <p class="q1-control-note">Select or clear the jurisdictions below to compare their annual counts.</p>
+          <div id="q1-controls" role="group" aria-label="Select states and territories to show in the Q1 line chart"></div>
+          <div id="q1-chart" role="group" aria-label="Interactive line chart of non-fatal road traffic hospitalisation counts across Australian jurisdictions, 2011 to 2021">
+            <p>Loading jurisdiction trends…</p>
+          </div>
+          <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017. Counts are not population-adjusted rates.</p>
         </div>
       </div>
     </section>
@@ -99,13 +112,14 @@
         <div class="chart-panel story-chart-panel">
           <div class="chart-panel-head"><div><p class="eyebrow">2011—2021 · Choose a year</p><h3>Hospitalisation counts by jurisdiction</h3></div><span class="chart-index">FIG. 02</span></div>
           <div id="q2-controls"></div>
-          <div id="q2-chart" role="group" aria-label="Interactive grouped bar chart comparing male and female hospitalisation counts"><p>Loading sex comparison data…</p></div>
+          <div id="q2-chart" role="group" aria-label="Interactive butterfly chart comparing male and female hospitalisation counts"><p>Loading sex comparison data…</p></div>
           <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017.</p>
         </div>
       </div>
     </section>
 
-    <section class="story-chapter planned-chapter section-wrap" id="question-3" aria-labelledby="q3-title">
+    <!-- QUESTION 03: Map of the largest road-user group per jurisdiction (js/q3.js, data/q3_map.csv) -->
+    <section class="story-chapter chart-chapter section-wrap" id="question-3" aria-labelledby="q3-title">
       <div class="chapter-rail"><span>03</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
         <div class="chapter-heading">
@@ -113,14 +127,24 @@
           <span class="chart-index">QUESTION 03</span>
         </div>
         <p class="chapter-question">Which road-user groups account for the largest hospitalised injury counts in each jurisdiction, and how did their counts and shares change between 2011 and 2021?</p>
-        <div class="story-figure-placeholder">
-          <div class="figure-placeholder-art figure-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <div><span class="figure-status">STORYBOARD · IN PROGRESS</span><h3>Compare group counts and shares</h3><p>A ranked comparison will pair 2011 and 2021 counts with each road-user group’s share, selectable by jurisdiction.</p></div>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head">
+            <div>
+              <p class="eyebrow">2011—2021 · Choose a year</p>
+              <h3>Largest road-user group by state and territory</h3>
+            </div>
+            <span class="chart-index">FIG. 03</span>
+          </div>
+          <!-- Target container for q3.js map rendering (ID kept from the original placeholder) -->
+          <div id="q3-heatmap-chart" role="group" aria-label="Interactive map of Australia showing the hospitalisation count of the largest road-user group in each jurisdiction, with a year slider and a 2011 versus 2021 comparison table">
+            <p>Loading road-user hospitalisation data…</p>
+          </div>
+          <p class="chart-caption">Source: BITRE, <em>Hospitalised Injuries from Road Crashes</em>, September 2023. Bubble size and colour show the count of the largest road-user group. Shares are of each jurisdiction's total. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017.</p>
         </div>
       </div>
     </section>
 
-    <!-- Q4 D3 visualisation: the interactive chart containers and IDs are used by js/q4.js. -->
+    <!-- Q4 D3 visualisation -->
     <section class="story-chapter chart-chapter section-wrap" id="question-4" aria-labelledby="q4-title">
       <div class="chapter-rail"><span>04</span><span class="rail-line"></span><span>05</span></div>
       <div class="chapter-content">
@@ -132,25 +156,17 @@
 
         <div class="q4-controls">
           <label for="q4-jurisdiction">Choose a jurisdiction</label>
-          <select id="q4-jurisdiction" aria-controls="q4-heatmap q4-dumbbell"></select>
-          <p class="q4-control-note">Only complete 2011 and 2021 values are compared.</p>
+          <select id="q4-jurisdiction" aria-controls="q4-dumbbell"></select>
+          <p class="q4-control-note">Compare the two endpoint years for each age group.</p>
         </div>
         <p id="q4-change-summary" class="q4-summary-card" aria-live="polite"></p>
 
-        <article class="q4-chart-panel" aria-labelledby="q4-heatmap-title">
-          <div class="chart-panel-head"><div><h3 id="q4-heatmap-title" class="q4-chart-title">Annual counts by age group</h3><p class="q4-chart-subtitle">Each cell shows a full-year count. The shared colour scale supports comparison across jurisdictions.</p></div><span class="chart-index">2011—2021</span></div>
-          <div id="q4-heatmap-tooltip" class="q4-tooltip" role="status" aria-live="polite"></div>
-          <div id="q4-heatmap" aria-label="Heatmap of age-group counts by year"></div>
-          <div class="q4-legend" aria-label="Heatmap key"><span class="q4-legend-item"><span class="q4-legend-hatch" aria-hidden="true"></span>Not published</span></div>
-          <p id="q4-data-note" class="q4-data-note"></p>
-        </article>
-
         <article class="q4-chart-panel" aria-labelledby="q4-dumbbell-title">
-          <div class="chart-panel-head"><div><h3 id="q4-dumbbell-title" class="q4-chart-title">Which age groups changed most?</h3><p class="q4-chart-subtitle">Dots compare 2011 with 2021. The right column shows the signed difference in cases; the axis adjusts to the selected jurisdiction.</p></div><span class="chart-index">2011 vs 2021</span></div>
+          <div class="chart-panel-head"><div><h3 id="q4-dumbbell-title" class="q4-chart-title">Which age groups changed most?</h3><p class="q4-chart-subtitle">Paired bars start at zero and are ranked by the absolute change from 2011 to 2021.</p></div><span class="chart-index">2011 vs 2021</span></div>
           <div class="q4-legend" aria-label="Dumbbell chart key">
             <span class="q4-legend-item"><span class="q4-legend-dot" aria-hidden="true"></span>2011</span>
             <span class="q4-legend-item"><span class="q4-legend-dot q4-legend-dot-end" aria-hidden="true"></span>2021</span>
-            <span class="q4-legend-item"><span class="q4-legend-line" aria-hidden="true"></span>Change between years</span>
+            <span class="q4-legend-item">Rows ranked by absolute change</span>
           </div>
           <div id="q4-dumbbell-tooltip" class="q4-tooltip" role="status" aria-live="polite"></div>
           <div id="q4-dumbbell" aria-label="Dumbbell comparison of 2011 and 2021 counts by age group"></div>
@@ -161,47 +177,27 @@
       </div>
     </section>
 
-<section class="section-wrap" id="q1-section"
-         aria-labelledby="q1-title">
-
-  <div class="section-label">
-    <span>Q1</span> HOSPITALISATION TRENDS
-  </div>
-
-  <div class="chart-panel">
-    <div class="chart-panel-head">
-      <div>
-        <p class="eyebrow">2011–2021 | Australia</p>
-        <h2 id="q1-title">
-          Hospitalisation trends by State and Territory
-        </h2>
+    <!-- QUESTION 05: Counterparty line chart (js/q5.js, data/q5_counterparty.csv) -->
+    <section class="story-chapter chart-chapter section-wrap" id="question-5" aria-labelledby="q5-title">
+      <div class="chapter-rail"><span>05</span><span class="rail-line"></span><span>05</span></div>
+      <div class="chapter-content">
+        <div class="chapter-heading">
+          <div><p class="eyebrow">What was involved?</p><h2 id="q5-title">What did road users<br>collide <em>with?</em></h2></div>
+          <span class="chart-index">QUESTION 05</span>
+        </div>
+        <p class="chapter-question">How did hospitalised injury counts by counterparty (what the road user collided with) change in each jurisdiction from 2011 to 2021?</p>
+        <div class="chart-panel story-chart-panel">
+          <div class="chart-panel-head">
+            <div><p class="eyebrow">2011—2021 · Choose a jurisdiction</p><h3>Hospitalised injuries by counterparty</h3></div>
+            <span class="chart-index">FIG. 05</span>
+          </div>
+          <div id="q5-controls"></div>
+          <div id="q5-chart" role="group" aria-label="Interactive line chart of hospitalised injuries by counterparty, 2011 to 2021"><p>Loading counterparty data…</p></div>
+          <p id="q5-summary" aria-live="polite"></p>
+          <p class="chart-caption">Source: BITRE, <em>State and territory hospitalisation injury publication 2023</em>. Reporting changes affect comparisons for Victoria from 2012 and New South Wales from 2017. Counts are not population-adjusted rates.</p>
+        </div>
       </div>
-      <span class="chart-index">FIG. Q1</span>
-    </div>
-
-    <p>
-      Explore how non-fatal hospitalised road traffic
-      injury counts changed across Australian states
-      and territories between 2011 and 2021.
-    </p>
-
-    <div id="q1-controls"></div>
-
-    <div id="q1-chart"
-         role="group"
-         aria-label="Interactive line chart of annual non-fatal hospitalised road traffic injury counts by Australian state and territory">
-      <p>Loading hospitalisation data...</p>
-    </div>
-
-    <p class="chart-caption">
-      Source: BITRE, Hospitalised Injuries from Road
-      Crashes, September 2023. Reporting changes
-      affect comparisons for Victoria from 2012 and
-      New South Wales from 2017.
-    </p>
-  </div>
-</section>
-
+    </section>
 
     <section class="team section-wrap" id="team" aria-labelledby="team-title">
       <div class="section-label"><span>03</span> THE TEAM</div>
@@ -209,7 +205,7 @@
       <div class="team-grid">
         <article class="team-card"><span class="team-number">01</span><h3>Gloria</h3><p class="team-role">PROJECT MANAGER</p><p>Coordinates the team, keeps the project plan current, and drafts the page structure and introduction.</p></article>
         <article class="team-card"><span class="team-number">02</span><h3>Manda</h3><p class="team-role">DATA EXPLORATION</p><p>Checks the dataset source and fields, documents data quality, and prepares the data for analysis.</p></article>
-        <article class="team-card"><span class="team-number">03</span><h3>Yathu</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
+        <article class="team-card"><span class="team-number">03</span><h3>Yathulan</h3><p class="team-role">VISUALISATION</p><p>Proposes charts with the team and builds the first agreed visualisation.</p></article>
       </div>
     </section>
 
