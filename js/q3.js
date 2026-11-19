@@ -1,16 +1,25 @@
-// Question 3: choropleth map of the largest road-user group's hospitalised count
-// in each jurisdiction, plus a 2011 vs 2021 comparison of counts and shares.
+// Question 3: which road-user group accounts for the largest hospitalised injury count
+// in each jurisdiction, and how did counts and shares change between years?
+// Choropleth map + comparison table, both driven by a road-user group selector.
 // Renders into #q3-heatmap-chart using D3 only (no map library, no internet needed).
-// Data: data/q3_map.csv  (columns: Group, RoadUser, Count, SharePct, Year)
+// Data: data/q3_road_users.csv  (columns: Group, RoadUser, Count, Total, Year; blank Count = n.p.)
 (() => {
   const TARGET_ID = 'q3-heatmap-chart';
-  const DATA_URL = 'data/q3_map.csv';
+  const DATA_URL = 'data/q3_road_users.csv';
+  const LARGEST = 'largest';
 
-  // Built-in copy of data/q3_map.csv (used if the CSV file cannot be loaded).
-  // Each row: [Group, RoadUser, Count, SharePct, Year]
-  const EMBEDDED = [["Australian Capital Territory","Car",198,36.9,2011],["Australian Capital Territory","Car",237,39.4,2012],["Australian Capital Territory","Car",212,37.0,2013],["Australian Capital Territory","Car",232,42.8,2014],["Australian Capital Territory","Car",275,39.3,2015],["Australian Capital Territory","Car",250,38.2,2016],["Australian Capital Territory","Car",250,39.6,2017],["Australian Capital Territory","Car",287,40.3,2018],["Australian Capital Territory","Car",279,42.0,2019],["Australian Capital Territory","Car",230,36.6,2020],["Australian Capital Territory","PedalCyclist",333,45.0,2021],["New South Wales","Car",5285,49.8,2011],["New South Wales","Car",5423,48.8,2012],["New South Wales","Car",5585,48.9,2013],["New South Wales","Car",5319,47.0,2014],["New South Wales","Car",5428,49.0,2015],["New South Wales","Car",5639,49.1,2016],["New South Wales","Car",5295,48.1,2017],["New South Wales","Car",4469,45.6,2018],["New South Wales","Car",4397,44.2,2019],["New South Wales","Car",3924,42.3,2020],["New South Wales","Car",3669,40.8,2021],["Northern Territory","Car",209,45.8,2011],["Northern Territory","Car",247,49.8,2012],["Northern Territory","Car",296,52.8,2013],["Northern Territory","Car",276,48.0,2014],["Northern Territory","Car",335,48.5,2015],["Northern Territory","Car",374,52.8,2016],["Northern Territory","Car",366,52.1,2017],["Northern Territory","Car",488,58.7,2018],["Northern Territory","Car",347,52.9,2019],["Northern Territory","Car",385,48.9,2020],["Northern Territory","Car",362,51.0,2021],["Queensland","Car",2768,43.8,2011],["Queensland","Car",3199,47.0,2012],["Queensland","Car",3658,46.8,2013],["Queensland","Car",3580,46.3,2014],["Queensland","Car",4013,48.3,2015],["Queensland","Car",4260,49.0,2016],["Queensland","Car",4559,49.9,2017],["Queensland","Car",4823,51.4,2018],["Queensland","Car",4829,50.8,2019],["Queensland","Car",4836,49.3,2020],["Queensland","Car",5471,52.4,2021],["South Australia","Car",1255,53.2,2011],["South Australia","Car",1133,49.0,2012],["South Australia","Car",1106,49.8,2013],["South Australia","Car",1066,44.8,2014],["South Australia","Car",1193,48.4,2015],["South Australia","Car",1292,48.7,2016],["South Australia","Car",1151,48.1,2017],["South Australia","Car",1190,47.8,2018],["South Australia","Car",1075,43.8,2019],["South Australia","Car",1089,43.5,2020],["South Australia","Car",1231,46.8,2021],["Tasmania","Car",225,45.6,2011],["Tasmania","Car",245,45.7,2012],["Tasmania","Car",265,46.5,2013],["Tasmania","Car",261,40.4,2014],["Tasmania","Car",325,48.0,2015],["Tasmania","Car",310,47.2,2016],["Tasmania","Car",310,47.0,2017],["Tasmania","Car",404,51.7,2018],["Tasmania","Car",344,48.6,2019],["Tasmania","Car",378,48.6,2020],["Tasmania","Car",399,49.6,2021],["Victoria","Car",4861,52.1,2011],["Victoria","Car",4062,50.2,2012],["Victoria","Car",3689,47.4,2013],["Victoria","Car",4070,47.8,2014],["Victoria","Car",4558,49.6,2015],["Victoria","Car",5324,51.4,2016],["Victoria","Car",5528,51.2,2017],["Victoria","Car",6099,53.3,2018],["Victoria","Car",5996,52.6,2019],["Victoria","Car",4661,47.2,2020],["Victoria","Car",5402,48.5,2021],["Western Australia","Car",1616,46.9,2011],["Western Australia","Car",1568,44.9,2012],["Western Australia","Car",1452,41.8,2013],["Western Australia","Car",1282,40.6,2014],["Western Australia","Car",1372,43.1,2015],["Western Australia","Car",1252,41.3,2016],["Western Australia","Car",1277,40.0,2017],["Western Australia","Car",1485,45.4,2018],["Western Australia","Car",1540,43.6,2019],["Western Australia","Car",1498,41.2,2020],["Western Australia","Car",1579,44.3,2021]];
+  const ROAD_USERS = ['Car', 'Motorcyclist', 'PedalCyclist', 'Pedestrian', 'HeavyTransport', 'PickupVan', 'Bus'];
+  const ROAD_USER_LABELS = {
+    Car: 'Car occupants', Motorcyclist: 'Motorcyclists', PedalCyclist: 'Pedal cyclists',
+    Pedestrian: 'Pedestrians', HeavyTransport: 'Heavy transport', PickupVan: 'Pick-up truck or van', Bus: 'Bus occupants'
+  };
 
-  const embeddedRows = () => EMBEDDED.map(([Group, RoadUser, Count, SharePct, Year]) => ({ Group, RoadUser, Count, SharePct, Year }));
+  // Built-in copy of data/q3_road_users.csv (used if the CSV file cannot be loaded).
+  // Each row: [Group, index into ROAD_USERS, Count (null = n.p.), Total, Year]
+  const EMBEDDED = [["Australian Capital Territory",0,198,537,2011],["Australian Capital Territory",1,144,537,2011],["Australian Capital Territory",2,149,537,2011],["Australian Capital Territory",3,30,537,2011],["Australian Capital Territory",4,null,537,2011],["Australian Capital Territory",5,null,537,2011],["Australian Capital Territory",6,null,537,2011],["Australian Capital Territory",0,237,601,2012],["Australian Capital Territory",1,144,601,2012],["Australian Capital Territory",2,173,601,2012],["Australian Capital Territory",3,27,601,2012],["Australian Capital Territory",4,null,601,2012],["Australian Capital Territory",5,null,601,2012],["Australian Capital Territory",6,null,601,2012],["Australian Capital Territory",0,212,573,2013],["Australian Capital Territory",1,137,573,2013],["Australian Capital Territory",2,174,573,2013],["Australian Capital Territory",3,33,573,2013],["Australian Capital Territory",4,null,573,2013],["Australian Capital Territory",5,null,573,2013],["Australian Capital Territory",6,null,573,2013],["Australian Capital Territory",0,232,542,2014],["Australian Capital Territory",1,102,542,2014],["Australian Capital Territory",2,179,542,2014],["Australian Capital Territory",3,20,542,2014],["Australian Capital Territory",4,null,542,2014],["Australian Capital Territory",5,null,542,2014],["Australian Capital Territory",6,null,542,2014],["Australian Capital Territory",0,275,700,2015],["Australian Capital Territory",1,145,700,2015],["Australian Capital Territory",2,222,700,2015],["Australian Capital Territory",3,27,700,2015],["Australian Capital Territory",4,null,700,2015],["Australian Capital Territory",5,null,700,2015],["Australian Capital Territory",6,null,700,2015],["Australian Capital Territory",0,250,654,2016],["Australian Capital Territory",1,147,654,2016],["Australian Capital Territory",2,215,654,2016],["Australian Capital Territory",3,28,654,2016],["Australian Capital Territory",4,null,654,2016],["Australian Capital Territory",5,null,654,2016],["Australian Capital Territory",6,null,654,2016],["Australian Capital Territory",0,250,632,2017],["Australian Capital Territory",1,119,632,2017],["Australian Capital Territory",2,211,632,2017],["Australian Capital Territory",3,34,632,2017],["Australian Capital Territory",4,null,632,2017],["Australian Capital Territory",5,null,632,2017],["Australian Capital Territory",6,null,632,2017],["Australian Capital Territory",0,287,712,2018],["Australian Capital Territory",1,161,712,2018],["Australian Capital Territory",2,217,712,2018],["Australian Capital Territory",3,24,712,2018],["Australian Capital Territory",4,null,712,2018],["Australian Capital Territory",5,null,712,2018],["Australian Capital Territory",6,null,712,2018],["Australian Capital Territory",0,279,665,2019],["Australian Capital Territory",1,136,665,2019],["Australian Capital Territory",2,218,665,2019],["Australian Capital Territory",3,22,665,2019],["Australian Capital Territory",4,null,665,2019],["Australian Capital Territory",5,null,665,2019],["Australian Capital Territory",6,null,665,2019],["Australian Capital Territory",0,230,629,2020],["Australian Capital Territory",1,142,629,2020],["Australian Capital Territory",2,223,629,2020],["Australian Capital Territory",3,14,629,2020],["Australian Capital Territory",4,null,629,2020],["Australian Capital Territory",5,null,629,2020],["Australian Capital Territory",6,null,629,2020],["Australian Capital Territory",0,234,740,2021],["Australian Capital Territory",1,144,740,2021],["Australian Capital Territory",2,333,740,2021],["Australian Capital Territory",3,22,740,2021],["Australian Capital Territory",4,null,740,2021],["Australian Capital Territory",5,null,740,2021],["Australian Capital Territory",6,null,740,2021],["New South Wales",0,5285,10618,2011],["New South Wales",1,2393,10618,2011],["New South Wales",2,1487,10618,2011],["New South Wales",3,967,10618,2011],["New South Wales",4,161,10618,2011],["New South Wales",5,63,10618,2011],["New South Wales",6,90,10618,2011],["New South Wales",0,5423,11121,2012],["New South Wales",1,2626,11121,2012],["New South Wales",2,1667,11121,2012],["New South Wales",3,955,11121,2012],["New South Wales",4,142,11121,2012],["New South Wales",5,84,11121,2012],["New South Wales",6,91,11121,2012],["New South Wales",0,5585,11421,2013],["New South Wales",1,2570,11421,2013],["New South Wales",2,1835,11421,2013],["New South Wales",3,993,11421,2013],["New South Wales",4,127,11421,2013],["New South Wales",5,67,11421,2013],["New South Wales",6,82,11421,2013],["New South Wales",0,5319,11313,2014],["New South Wales",1,2636,11313,2014],["New South Wales",2,1902,11313,2014],["New South Wales",3,1000,11313,2014],["New South Wales",4,145,11313,2014],["New South Wales",5,73,11313,2014],["New South Wales",6,107,11313,2014],["New South Wales",0,5428,11084,2015],["New South Wales",1,2459,11084,2015],["New South Wales",2,1793,11084,2015],["New South Wales",3,951,11084,2015],["New South Wales",4,163,11084,2015],["New South Wales",5,65,11084,2015],["New South Wales",6,96,11084,2015],["New South Wales",0,5639,11474,2016],["New South Wales",1,2648,11474,2016],["New South Wales",2,1775,11474,2016],["New South Wales",3,964,11474,2016],["New South Wales",4,133,11474,2016],["New South Wales",5,67,11474,2016],["New South Wales",6,114,11474,2016],["New South Wales",0,5295,11016,2017],["New South Wales",1,2526,11016,2017],["New South Wales",2,1791,11016,2017],["New South Wales",3,929,11016,2017],["New South Wales",4,147,11016,2017],["New South Wales",5,82,11016,2017],["New South Wales",6,109,11016,2017],["New South Wales",0,4469,9794,2018],["New South Wales",1,2347,9794,2018],["New South Wales",2,1681,9794,2018],["New South Wales",3,823,9794,2018],["New South Wales",4,151,9794,2018],["New South Wales",5,68,9794,2018],["New South Wales",6,92,9794,2018],["New South Wales",0,4397,9942,2019],["New South Wales",1,2565,9942,2019],["New South Wales",2,1678,9942,2019],["New South Wales",3,858,9942,2019],["New South Wales",4,127,9942,2019],["New South Wales",5,52,9942,2019],["New South Wales",6,97,9942,2019],["New South Wales",0,3924,9274,2020],["New South Wales",1,2335,9274,2020],["New South Wales",2,1950,9274,2020],["New South Wales",3,660,9274,2020],["New South Wales",4,125,9274,2020],["New South Wales",5,78,9274,2020],["New South Wales",6,64,9274,2020],["New South Wales",0,3669,9003,2021],["New South Wales",1,2253,9003,2021],["New South Wales",2,2042,9003,2021],["New South Wales",3,649,9003,2021],["New South Wales",4,103,9003,2021],["New South Wales",5,73,9003,2021],["New South Wales",6,50,9003,2021],["Northern Territory",0,209,456,2011],["Northern Territory",1,106,456,2011],["Northern Territory",2,62,456,2011],["Northern Territory",3,44,456,2011],["Northern Territory",4,null,456,2011],["Northern Territory",5,null,456,2011],["Northern Territory",6,null,456,2011],["Northern Territory",0,247,496,2012],["Northern Territory",1,118,496,2012],["Northern Territory",2,45,496,2012],["Northern Territory",3,51,496,2012],["Northern Territory",4,null,496,2012],["Northern Territory",5,null,496,2012],["Northern Territory",6,null,496,2012],["Northern Territory",0,296,561,2013],["Northern Territory",1,121,561,2013],["Northern Territory",2,70,561,2013],["Northern Territory",3,42,561,2013],["Northern Territory",4,null,561,2013],["Northern Territory",5,null,561,2013],["Northern Territory",6,null,561,2013],["Northern Territory",0,276,575,2014],["Northern Territory",1,150,575,2014],["Northern Territory",2,65,575,2014],["Northern Territory",3,59,575,2014],["Northern Territory",4,null,575,2014],["Northern Territory",5,null,575,2014],["Northern Territory",6,null,575,2014],["Northern Territory",0,335,691,2015],["Northern Territory",1,169,691,2015],["Northern Territory",2,81,691,2015],["Northern Territory",3,71,691,2015],["Northern Territory",4,null,691,2015],["Northern Territory",5,19,691,2015],["Northern Territory",6,null,691,2015],["Northern Territory",0,374,709,2016],["Northern Territory",1,151,709,2016],["Northern Territory",2,70,709,2016],["Northern Territory",3,59,709,2016],["Northern Territory",4,null,709,2016],["Northern Territory",5,null,709,2016],["Northern Territory",6,null,709,2016],["Northern Territory",0,366,703,2017],["Northern Territory",1,149,703,2017],["Northern Territory",2,74,703,2017],["Northern Territory",3,79,703,2017],["Northern Territory",4,null,703,2017],["Northern Territory",5,null,703,2017],["Northern Territory",6,null,703,2017],["Northern Territory",0,488,832,2018],["Northern Territory",1,169,832,2018],["Northern Territory",2,71,832,2018],["Northern Territory",3,73,832,2018],["Northern Territory",4,null,832,2018],["Northern Territory",5,null,832,2018],["Northern Territory",6,null,832,2018],["Northern Territory",0,347,656,2019],["Northern Territory",1,153,656,2019],["Northern Territory",2,84,656,2019],["Northern Territory",3,38,656,2019],["Northern Territory",4,null,656,2019],["Northern Territory",5,null,656,2019],["Northern Territory",6,null,656,2019],["Northern Territory",0,385,787,2020],["Northern Territory",1,195,787,2020],["Northern Territory",2,108,787,2020],["Northern Territory",3,56,787,2020],["Northern Territory",4,null,787,2020],["Northern Territory",5,null,787,2020],["Northern Territory",6,null,787,2020],["Northern Territory",0,362,710,2021],["Northern Territory",1,157,710,2021],["Northern Territory",2,92,710,2021],["Northern Territory",3,58,710,2021],["Northern Territory",4,null,710,2021],["Northern Territory",5,null,710,2021],["Northern Territory",6,null,710,2021],["Queensland",0,2768,6322,2011],["Queensland",1,1781,6322,2011],["Queensland",2,955,6322,2011],["Queensland",3,443,6322,2011],["Queensland",4,162,6322,2011],["Queensland",5,41,6322,2011],["Queensland",6,29,6322,2011],["Queensland",0,3199,6813,2012],["Queensland",1,1776,6813,2012],["Queensland",2,1054,6813,2012],["Queensland",3,416,6813,2012],["Queensland",4,146,6813,2012],["Queensland",5,51,6813,2012],["Queensland",6,33,6813,2012],["Queensland",0,3658,7821,2013],["Queensland",1,2047,7821,2013],["Queensland",2,1321,7821,2013],["Queensland",3,400,7821,2013],["Queensland",4,165,7821,2013],["Queensland",5,53,7821,2013],["Queensland",6,37,7821,2013],["Queensland",0,3580,7725,2014],["Queensland",1,2070,7725,2014],["Queensland",2,1333,7725,2014],["Queensland",3,372,7725,2014],["Queensland",4,146,7725,2014],["Queensland",5,41,7725,2014],["Queensland",6,49,7725,2014],["Queensland",0,4013,8306,2015],["Queensland",1,2144,8306,2015],["Queensland",2,1378,8306,2015],["Queensland",3,427,8306,2015],["Queensland",4,141,8306,2015],["Queensland",5,50,8306,2015],["Queensland",6,40,8306,2015],["Queensland",0,4260,8702,2016],["Queensland",1,2159,8702,2016],["Queensland",2,1442,8702,2016],["Queensland",3,455,8702,2016],["Queensland",4,142,8702,2016],["Queensland",5,57,8702,2016],["Queensland",6,41,8702,2016],["Queensland",0,4559,9134,2017],["Queensland",1,2208,9134,2017],["Queensland",2,1542,9134,2017],["Queensland",3,439,9134,2017],["Queensland",4,170,9134,2017],["Queensland",5,53,9134,2017],["Queensland",6,28,9134,2017],["Queensland",0,4823,9381,2018],["Queensland",1,2320,9381,2018],["Queensland",2,1408,9381,2018],["Queensland",3,430,9381,2018],["Queensland",4,163,9381,2018],["Queensland",5,69,9381,2018],["Queensland",6,37,9381,2018],["Queensland",0,4829,9515,2019],["Queensland",1,2322,9515,2019],["Queensland",2,1531,9515,2019],["Queensland",3,444,9515,2019],["Queensland",4,165,9515,2019],["Queensland",5,65,9515,2019],["Queensland",6,39,9515,2019],["Queensland",0,4836,9801,2020],["Queensland",1,2447,9801,2020],["Queensland",2,1684,9801,2020],["Queensland",3,414,9801,2020],["Queensland",4,171,9801,2020],["Queensland",5,85,9801,2020],["Queensland",6,22,9801,2020],["Queensland",0,5471,10447,2021],["Queensland",1,2598,10447,2021],["Queensland",2,1504,10447,2021],["Queensland",3,448,10447,2021],["Queensland",4,144,10447,2021],["Queensland",5,92,10447,2021],["Queensland",6,38,10447,2021],["South Australia",0,1255,2359,2011],["South Australia",1,460,2359,2011],["South Australia",2,379,2359,2011],["South Australia",3,176,2359,2011],["South Australia",4,28,2359,2011],["South Australia",5,11,2359,2011],["South Australia",6,14,2359,2011],["South Australia",0,1133,2311,2012],["South Australia",1,451,2311,2012],["South Australia",2,401,2311,2012],["South Australia",3,196,2311,2012],["South Australia",4,31,2311,2012],["South Australia",5,10,2311,2012],["South Australia",6,8,2311,2012],["South Australia",0,1106,2221,2013],["South Australia",1,455,2221,2013],["South Australia",2,400,2221,2013],["South Australia",3,172,2221,2013],["South Australia",4,25,2221,2013],["South Australia",5,20,2221,2013],["South Australia",6,16,2221,2013],["South Australia",0,1066,2381,2014],["South Australia",1,557,2381,2014],["South Australia",2,494,2381,2014],["South Australia",3,162,2381,2014],["South Australia",4,35,2381,2014],["South Australia",5,26,2381,2014],["South Australia",6,8,2381,2014],["South Australia",0,1193,2467,2015],["South Australia",1,549,2467,2015],["South Australia",2,517,2467,2015],["South Australia",3,121,2467,2015],["South Australia",4,17,2467,2015],["South Australia",5,12,2467,2015],["South Australia",6,6,2467,2015],["South Australia",0,1292,2654,2016],["South Australia",1,546,2654,2016],["South Australia",2,527,2654,2016],["South Australia",3,168,2654,2016],["South Australia",4,39,2654,2016],["South Australia",5,22,2654,2016],["South Australia",6,14,2654,2016],["South Australia",0,1151,2394,2017],["South Australia",1,531,2394,2017],["South Australia",2,469,2394,2017],["South Australia",3,127,2394,2017],["South Australia",4,31,2394,2017],["South Australia",5,15,2394,2017],["South Australia",6,15,2394,2017],["South Australia",0,1190,2489,2018],["South Australia",1,559,2489,2018],["South Australia",2,496,2489,2018],["South Australia",3,148,2489,2018],["South Australia",4,20,2489,2018],["South Australia",5,8,2489,2018],["South Australia",6,9,2489,2018],["South Australia",0,1075,2457,2019],["South Australia",1,562,2457,2019],["South Australia",2,526,2457,2019],["South Australia",3,167,2457,2019],["South Australia",4,44,2457,2019],["South Australia",5,9,2457,2019],["South Australia",6,14,2457,2019],["South Australia",0,1089,2503,2020],["South Australia",1,583,2503,2020],["South Australia",2,593,2503,2020],["South Australia",3,131,2503,2020],["South Australia",4,29,2503,2020],["South Australia",5,23,2503,2020],["South Australia",6,23,2503,2020],["South Australia",0,1231,2632,2021],["South Australia",1,556,2632,2021],["South Australia",2,577,2632,2021],["South Australia",3,172,2632,2021],["South Australia",4,26,2632,2021],["South Australia",5,16,2632,2021],["South Australia",6,14,2632,2021],["Tasmania",0,225,493,2011],["Tasmania",1,129,493,2011],["Tasmania",2,73,493,2011],["Tasmania",3,45,493,2011],["Tasmania",4,null,493,2011],["Tasmania",5,null,493,2011],["Tasmania",6,null,493,2011],["Tasmania",0,245,536,2012],["Tasmania",1,124,536,2012],["Tasmania",2,91,536,2012],["Tasmania",3,51,536,2012],["Tasmania",4,null,536,2012],["Tasmania",5,null,536,2012],["Tasmania",6,null,536,2012],["Tasmania",0,265,570,2013],["Tasmania",1,149,570,2013],["Tasmania",2,94,570,2013],["Tasmania",3,43,570,2013],["Tasmania",4,null,570,2013],["Tasmania",5,null,570,2013],["Tasmania",6,null,570,2013],["Tasmania",0,261,646,2014],["Tasmania",1,204,646,2014],["Tasmania",2,111,646,2014],["Tasmania",3,45,646,2014],["Tasmania",4,null,646,2014],["Tasmania",5,null,646,2014],["Tasmania",6,null,646,2014],["Tasmania",0,325,677,2015],["Tasmania",1,197,677,2015],["Tasmania",2,93,677,2015],["Tasmania",3,35,677,2015],["Tasmania",4,null,677,2015],["Tasmania",5,null,677,2015],["Tasmania",6,null,677,2015],["Tasmania",0,310,657,2016],["Tasmania",1,171,657,2016],["Tasmania",2,96,657,2016],["Tasmania",3,41,657,2016],["Tasmania",4,null,657,2016],["Tasmania",5,null,657,2016],["Tasmania",6,null,657,2016],["Tasmania",0,310,659,2017],["Tasmania",1,169,659,2017],["Tasmania",2,107,659,2017],["Tasmania",3,34,659,2017],["Tasmania",4,null,659,2017],["Tasmania",5,null,659,2017],["Tasmania",6,null,659,2017],["Tasmania",0,404,781,2018],["Tasmania",1,171,781,2018],["Tasmania",2,109,781,2018],["Tasmania",3,59,781,2018],["Tasmania",4,null,781,2018],["Tasmania",5,null,781,2018],["Tasmania",6,null,781,2018],["Tasmania",0,344,708,2019],["Tasmania",1,148,708,2019],["Tasmania",2,121,708,2019],["Tasmania",3,53,708,2019],["Tasmania",4,null,708,2019],["Tasmania",5,null,708,2019],["Tasmania",6,null,708,2019],["Tasmania",0,378,778,2020],["Tasmania",1,192,778,2020],["Tasmania",2,133,778,2020],["Tasmania",3,36,778,2020],["Tasmania",4,null,778,2020],["Tasmania",5,null,778,2020],["Tasmania",6,null,778,2020],["Tasmania",0,399,805,2021],["Tasmania",1,198,805,2021],["Tasmania",2,118,805,2021],["Tasmania",3,46,805,2021],["Tasmania",4,null,805,2021],["Tasmania",5,null,805,2021],["Tasmania",6,null,805,2021],["Victoria",0,4861,9326,2011],["Victoria",1,1622,9326,2011],["Victoria",2,1687,9326,2011],["Victoria",3,739,9326,2011],["Victoria",4,156,9326,2011],["Victoria",5,71,9326,2011],["Victoria",6,39,9326,2011],["Victoria",0,4062,8098,2012],["Victoria",1,1505,8098,2012],["Victoria",2,1530,8098,2012],["Victoria",3,675,8098,2012],["Victoria",4,116,8098,2012],["Victoria",5,74,8098,2012],["Victoria",6,33,8098,2012],["Victoria",0,3689,7784,2013],["Victoria",1,1521,7784,2013],["Victoria",2,1583,7784,2013],["Victoria",3,673,7784,2013],["Victoria",4,103,7784,2013],["Victoria",5,52,7784,2013],["Victoria",6,45,7784,2013],["Victoria",0,4070,8523,2014],["Victoria",1,1654,8523,2014],["Victoria",2,1819,8523,2014],["Victoria",3,643,8523,2014],["Victoria",4,107,8523,2014],["Victoria",5,58,8523,2014],["Victoria",6,57,8523,2014],["Victoria",0,4558,9198,2015],["Victoria",1,1694,9198,2015],["Victoria",2,1894,9198,2015],["Victoria",3,700,9198,2015],["Victoria",4,107,9198,2015],["Victoria",5,63,9198,2015],["Victoria",6,60,9198,2015],["Victoria",0,5324,10360,2016],["Victoria",1,1806,10360,2016],["Victoria",2,2008,10360,2016],["Victoria",3,800,10360,2016],["Victoria",4,110,10360,2016],["Victoria",5,76,10360,2016],["Victoria",6,63,10360,2016],["Victoria",0,5528,10794,2017],["Victoria",1,1979,10794,2017],["Victoria",2,2089,10794,2017],["Victoria",3,786,10794,2017],["Victoria",4,126,10794,2017],["Victoria",5,67,10794,2017],["Victoria",6,73,10794,2017],["Victoria",0,6099,11453,2018],["Victoria",1,1944,11453,2018],["Victoria",2,2144,11453,2018],["Victoria",3,830,11453,2018],["Victoria",4,143,11453,2018],["Victoria",5,70,11453,2018],["Victoria",6,73,11453,2018],["Victoria",0,5996,11392,2019],["Victoria",1,1939,11392,2019],["Victoria",2,2215,11392,2019],["Victoria",3,815,11392,2019],["Victoria",4,122,11392,2019],["Victoria",5,69,11392,2019],["Victoria",6,67,11392,2019],["Victoria",0,4661,9884,2020],["Victoria",1,1682,9884,2020],["Victoria",2,2645,9884,2020],["Victoria",3,558,9884,2020],["Victoria",4,103,9884,2020],["Victoria",5,57,9884,2020],["Victoria",6,34,9884,2020],["Victoria",0,5402,11130,2021],["Victoria",1,1967,11130,2021],["Victoria",2,2695,11130,2021],["Victoria",3,682,11130,2021],["Victoria",4,136,11130,2021],["Victoria",5,76,11130,2021],["Victoria",6,37,11130,2021],["Western Australia",0,1616,3442,2011],["Western Australia",1,867,3442,2011],["Western Australia",2,530,3442,2011],["Western Australia",3,261,3442,2011],["Western Australia",4,45,3442,2011],["Western Australia",5,27,3442,2011],["Western Australia",6,26,3442,2011],["Western Australia",0,1568,3493,2012],["Western Australia",1,909,3493,2012],["Western Australia",2,587,3493,2012],["Western Australia",3,242,3493,2012],["Western Australia",4,50,3493,2012],["Western Australia",5,25,3493,2012],["Western Australia",6,24,3493,2012],["Western Australia",0,1452,3475,2013],["Western Australia",1,958,3475,2013],["Western Australia",2,675,3475,2013],["Western Australia",3,245,3475,2013],["Western Australia",4,40,3475,2013],["Western Australia",5,19,3475,2013],["Western Australia",6,30,3475,2013],["Western Australia",0,1282,3154,2014],["Western Australia",1,865,3154,2014],["Western Australia",2,657,3154,2014],["Western Australia",3,198,3154,2014],["Western Australia",4,35,3154,2014],["Western Australia",5,19,3154,2014],["Western Australia",6,29,3154,2014],["Western Australia",0,1372,3183,2015],["Western Australia",1,842,3183,2015],["Western Australia",2,621,3183,2015],["Western Australia",3,204,3183,2015],["Western Australia",4,33,3183,2015],["Western Australia",5,8,3183,2015],["Western Australia",6,13,3183,2015],["Western Australia",0,1252,3031,2016],["Western Australia",1,802,3031,2016],["Western Australia",2,652,3031,2016],["Western Australia",3,166,3031,2016],["Western Australia",4,34,3031,2016],["Western Australia",5,36,3031,2016],["Western Australia",6,21,3031,2016],["Western Australia",0,1277,3195,2017],["Western Australia",1,931,3195,2017],["Western Australia",2,637,3195,2017],["Western Australia",3,194,3195,2017],["Western Australia",4,29,3195,2017],["Western Australia",5,25,3195,2017],["Western Australia",6,15,3195,2017],["Western Australia",0,1485,3274,2018],["Western Australia",1,788,3274,2018],["Western Australia",2,665,3274,2018],["Western Australia",3,189,3274,2018],["Western Australia",4,46,3274,2018],["Western Australia",5,29,3274,2018],["Western Australia",6,12,3274,2018],["Western Australia",0,1540,3534,2019],["Western Australia",1,886,3534,2019],["Western Australia",2,735,3534,2019],["Western Australia",3,227,3534,2019],["Western Australia",4,40,3534,2019],["Western Australia",5,28,3534,2019],["Western Australia",6,16,3534,2019],["Western Australia",0,1498,3636,2020],["Western Australia",1,949,3636,2020],["Western Australia",2,834,3636,2020],["Western Australia",3,183,3636,2020],["Western Australia",4,44,3636,2020],["Western Australia",5,34,3636,2020],["Western Australia",6,20,3636,2020],["Western Australia",0,1579,3568,2021],["Western Australia",1,882,3568,2021],["Western Australia",2,704,3568,2021],["Western Australia",3,220,3568,2021],["Western Australia",4,47,3568,2021],["Western Australia",5,43,3568,2021],["Western Australia",6,22,3568,2021]];
+
+  const embeddedRows = () => EMBEDDED.map(([Group, user, Count, Total, Year]) =>
+    ({ Group, RoadUser: ROAD_USERS[user], Count: Count === null ? '' : Count, Total, Year }));
 
   // Simplified state and territory boundaries (GeoJSON, longitude/latitude).
   // Source: github.com/rowanhogan/australian-states, simplified for display.
@@ -21,63 +30,61 @@
     'Western Australia': 'WA', 'Tasmania': 'TAS', 'Northern Territory': 'NT', 'Australian Capital Territory': 'ACT'
   };
 
-  const ROAD_USER_LABELS = {
-    Car: 'Car occupants', Motorcyclist: 'Motorcyclists', PedalCyclist: 'Pedal cyclists',
-    Pedestrian: 'Pedestrians', HeavyTransport: 'Heavy transport', PickupVan: 'Pick-up truck or van', Bus: 'Bus occupants'
-  };
-
   const formatCount = d3.format(',');
   const formatSignedCount = d3.format('+,');
   const formatSignedPp = d3.format('+.1f');
   const label = (user) => ROAD_USER_LABELS[user] || user;
   const pct = (value) => (Number.isFinite(value) ? `${value.toFixed(1)}%` : 'n/a');
   const textColour = (fill) => (d3.lab(fill).l < 58 ? '#ffffff' : '#1d2b22');
+  const NO_DATA_FILL = '#dde1da';
 
   const parseRows = (rows) => rows
-    .map((row) => ({
-      group: String(row.Group || '').trim(),
-      user: String(row.RoadUser || '').trim(),
-      count: +row.Count,
-      share: +(row.SharePct ?? row.Share),
-      year: +row.Year
-    }))
-    .filter((row) => row.group && Number.isFinite(row.count) && Number.isFinite(row.year));
-
-  const buildTable = (data, firstYear, lastYear) => {
-    const byKey = new Map(data.map((row) => [`${row.group}|${row.year}`, row]));
-    const groups = [...new Set(data.map((row) => row.group))].sort(d3.ascending);
-    const body = groups.map((group) => {
-      const a = byKey.get(`${group}|${firstYear}`);
-      const b = byKey.get(`${group}|${lastYear}`);
-      if (!a || !b) { return ''; }
-      return `<tr>
-        <th scope="row">${group}</th>
-        <td>${label(a.user)}</td><td class="q3-num">${formatCount(a.count)}</td><td class="q3-num">${pct(a.share)}</td>
-        <td>${label(b.user)}</td><td class="q3-num">${formatCount(b.count)}</td><td class="q3-num">${pct(b.share)}</td>
-        <td class="q3-num">${formatSignedCount(b.count - a.count)}</td>
-        <td class="q3-num">${formatSignedPp(b.share - a.share)} pp</td>
-      </tr>`;
-    }).join('');
-    return `<table class="q3-table">
-      <caption class="q3-summary">Largest road-user group in ${firstYear} and ${lastYear}, with the change in its count and share of the jurisdiction total.</caption>
-      <thead><tr>
-        <th scope="col">Jurisdiction</th>
-        <th scope="col">${firstYear} group</th><th scope="col">Count</th><th scope="col">Share</th>
-        <th scope="col">${lastYear} group</th><th scope="col">Count</th><th scope="col">Share</th>
-        <th scope="col">Count change</th><th scope="col">Share change</th>
-      </tr></thead><tbody>${body}</tbody></table>`;
-  };
+    .map((row) => {
+      const count = row.Count === '' || row.Count === null || row.Count === undefined ? NaN : +row.Count;
+      const total = +row.Total;
+      return {
+        group: String(row.Group || '').trim(),
+        user: String(row.RoadUser || '').trim(),
+        count,                                       // NaN means n.p. (not for publication)
+        total,
+        share: Number.isFinite(count) && total > 0 ? (count / total) * 100 : NaN,
+        year: +row.Year
+      };
+    })
+    .filter((row) => row.group && row.user && Number.isFinite(row.year));
 
   const render = (root, data) => {
     const years = [...new Set(data.map((row) => row.year))].sort(d3.ascending);
     const firstYear = years[0];
     const lastYear = years[years.length - 1];
-    const [minCount, maxCount] = d3.extent(data, (row) => row.count);
-    // One colour scale for every year, so shading is comparable when the slider moves
-    const colour = d3.scaleSequentialSqrt(d3.interpolateYlGn).domain([minCount, maxCount]);
-    const byKey = new Map(data.map((row) => [`${row.group}|${row.year}`, row]));
+    const groups = [...new Set(data.map((row) => row.group))].sort(d3.ascending);
+    const lookup = d3.group(data, (row) => row.group, (row) => row.year);
+
+    // selection: 'largest' (largest group in each jurisdiction) or one road-user key
+    const rowFor = (group, year, selection) => {
+      const rows = lookup.get(group)?.get(year) || [];
+      if (selection === LARGEST) {
+        const valid = rows.filter((row) => Number.isFinite(row.count));
+        return valid.length ? d3.greatest(valid, (row) => row.count) : null;
+      }
+      return rows.find((row) => row.user === selection) || null;
+    };
+
+    const valuesFor = (selection) => groups.flatMap((group) => years
+      .map((year) => rowFor(group, year, selection))
+      .filter((row) => row && Number.isFinite(row.count))
+      .map((row) => row.count));
+
+    const selectionLabel = (selection) => (selection === LARGEST ? "Largest group's hospitalised count" : `${label(selection)}: hospitalised count`);
 
     root.innerHTML = `
+      <div class="q3-controls">
+        <label for="q3-user">Road-user group</label>
+        <select class="q3-select" id="q3-user">
+          <option value="${LARGEST}">Largest group in each jurisdiction</option>
+          ${ROAD_USERS.map((user) => `<option value="${user}">${label(user)}</option>`).join('')}
+        </select>
+      </div>
       <div class="q3-controls">
         <label for="q3-year-slider">Year</label>
         <span class="q3-year-label" id="q3-year-label" aria-live="polite"></span>
@@ -85,54 +92,106 @@
         <button class="q3-play" id="q3-play" type="button">Play</button>
       </div>
       <div class="q3-map" id="q3-map"></div>
-      <p class="q3-note">Shading shows the hospitalised count of the largest road-user group in each state or territory. Boundaries simplified for display.</p>
-      <div class="q3-table-wrap">${buildTable(data, firstYear, lastYear)}</div>`;
+      <p class="q3-note">Shading shows the hospitalised count for the selected road-user group. Grey means the count is not published (n.p.). Boundaries simplified for display.</p>
+      <div class="q3-table-controls">
+        <span class="q3-table-title">Compare years</span>
+        <label for="q3-year-a">From</label>
+        <select class="q3-select" id="q3-year-a">${years.map((y) => `<option value="${y}"${y === firstYear ? ' selected' : ''}>${y}</option>`).join('')}</select>
+        <label for="q3-year-b">to</label>
+        <select class="q3-select" id="q3-year-b">${years.map((y) => `<option value="${y}"${y === lastYear ? ' selected' : ''}>${y}</option>`).join('')}</select>
+      </div>
+      <div class="q3-table-wrap" id="q3-table-wrap"></div>`;
 
+    let selection = LARGEST;
+    let currentYear = lastYear;
+
+    // ---------- comparison table ----------
+    const tableWrap = root.querySelector('#q3-table-wrap');
+    const yearASelect = root.querySelector('#q3-year-a');
+    const yearBSelect = root.querySelector('#q3-year-b');
+
+    const countCell = (row) => (row && Number.isFinite(row.count) ? formatCount(row.count) : 'n.p.');
+    const shareCell = (row) => (row && Number.isFinite(row.share) ? pct(row.share) : 'n.p.');
+
+    const buildTable = () => {
+      const yearA = +yearASelect.value;
+      const yearB = +yearBSelect.value;
+      const showUser = selection === LARGEST;
+      const body = groups.map((group) => {
+        const a = rowFor(group, yearA, selection);
+        const b = rowFor(group, yearB, selection);
+        const ok = a && b && Number.isFinite(a.count) && Number.isFinite(b.count);
+        return `<tr>
+          <th scope="row">${group}</th>
+          ${showUser ? `<td>${a ? label(a.user) : 'n.p.'}</td>` : ''}
+          <td class="q3-num">${countCell(a)}</td><td class="q3-num">${shareCell(a)}</td>
+          ${showUser ? `<td>${b ? label(b.user) : 'n.p.'}</td>` : ''}
+          <td class="q3-num">${countCell(b)}</td><td class="q3-num">${shareCell(b)}</td>
+          <td class="q3-num">${ok ? formatSignedCount(b.count - a.count) : 'n/a'}</td>
+          <td class="q3-num">${ok ? `${formatSignedPp(b.share - a.share)} pp` : 'n/a'}</td>
+        </tr>`;
+      }).join('');
+      const what = showUser ? 'Largest road-user group' : label(selection);
+      tableWrap.innerHTML = `<table class="q3-table">
+        <caption class="q3-summary">${what} in ${yearA} and ${yearB}, with the change in its count and in its share of the jurisdiction total. n.p. = not for publication.</caption>
+        <thead><tr>
+          <th scope="col">Jurisdiction</th>
+          ${showUser ? `<th scope="col">${yearA} group</th>` : ''}<th scope="col">Count ${yearA}</th><th scope="col">Share ${yearA}</th>
+          ${showUser ? `<th scope="col">${yearB} group</th>` : ''}<th scope="col">Count ${yearB}</th><th scope="col">Share ${yearB}</th>
+          <th scope="col">Count change</th><th scope="col">Share change</th>
+        </tr></thead><tbody>${body}</tbody></table>`;
+    };
+
+    // ---------- choropleth map ----------
     const width = 800;
     const height = 600;
     const mapHost = root.querySelector('#q3-map');
     const svg = d3.select(mapHost).append('svg')
       .attr('viewBox', `0 0 ${width} ${height}`)
       .attr('role', 'group')
-      .attr('aria-label', 'Choropleth map of Australian states and territories shaded by the hospitalised count of the largest road-user group');
+      .attr('aria-label', 'Choropleth map of Australian states and territories shaded by hospitalised injury count for the selected road-user group');
 
     const projection = d3.geoMercator().fitExtent([[10, 10], [width - 10, height - 48]], STATES);
     const path = d3.geoPath(projection);
-
     const tooltip = d3.select(mapHost).append('div').attr('class', 'q3-tooltip').style('opacity', 0);
 
-    let currentYear = lastYear;
-    const rowFor = (name) => byKey.get(`${name}|${currentYear}`);
-    const fillFor = (name) => { const row = rowFor(name); return row ? colour(row.count) : '#e5e8e2'; };
+    let colour = d3.scaleSequentialSqrt(d3.interpolateYlGn).domain([0, 1]);
+    const fillFor = (name) => {
+      const row = rowFor(name, currentYear, selection);
+      return row && Number.isFinite(row.count) ? colour(row.count) : NO_DATA_FILL;
+    };
     const describe = (name) => {
-      const row = rowFor(name);
-      if (!row) { return `${name}: no data for ${currentYear}`; }
-      return `${name}, ${currentYear}: ${formatCount(row.count)} hospitalised. Largest group: ${label(row.user)}${Number.isFinite(row.share) ? ` (${pct(row.share)} of total)` : ''}`;
+      const row = rowFor(name, currentYear, selection);
+      if (!row) { return `${name}, ${currentYear}: no data`; }
+      if (!Number.isFinite(row.count)) { return `${name}, ${currentYear}: ${label(row.user)} count not for publication`; }
+      return `${name}, ${currentYear}: ${formatCount(row.count)} hospitalised. ${label(row.user)} (${pct(row.share)} of total)`;
     };
-    const showTip = (event, name) => {
-      const row = rowFor(name);
-      const [px, py] = d3.pointer(event, mapHost);
-      tooltip.html(row
-        ? `<strong>${name}</strong><br>${currentYear}: ${formatCount(row.count)} hospitalised<br>Largest group: ${label(row.user)}${Number.isFinite(row.share) ? ` (${pct(row.share)} of total)` : ''}`
-        : `<strong>${name}</strong><br>No data for ${currentYear}`)
-        .style('opacity', 1).style('left', `${Math.min(px + 14, mapHost.clientWidth - 230)}px`).style('top', `${py + 14}px`);
+    const tipHtml = (name) => {
+      const row = rowFor(name, currentYear, selection);
+      if (!row) { return `<strong>${name}</strong><br>No data for ${currentYear}`; }
+      if (!Number.isFinite(row.count)) { return `<strong>${name}</strong><br>${label(row.user)}, ${currentYear}:<br>not for publication (n.p.)`; }
+      return `<strong>${name}</strong><br>${currentYear}: ${formatCount(row.count)} hospitalised<br>${selection === LARGEST ? 'Largest group: ' : 'Group: '}${label(row.user)}<br>${pct(row.share)} of the jurisdiction total`;
     };
+    const showTipAt = (name, px, py) => tooltip.html(tipHtml(name)).style('opacity', 1)
+      .style('left', `${Math.max(0, Math.min(px + 14, mapHost.clientWidth - 230))}px`).style('top', `${py + 14}px`);
     const hideTip = () => tooltip.style('opacity', 0);
 
-    const attachHover = (selection, nameOf) => selection
+    const attachHover = (selectionOfShapes, nameOf) => selectionOfShapes
       .attr('tabindex', 0).attr('role', 'img')
-      .on('mousemove', (event, d) => showTip(event, nameOf(d)))
+      .on('mousemove', (event, d) => { const [px, py] = d3.pointer(event, mapHost); showTipAt(nameOf(d), px, py); })
       .on('mouseleave', hideTip)
-      .on('focus', (event, d) => { const box = event.currentTarget.getBoundingClientRect(); const host = mapHost.getBoundingClientRect(); showTip({ clientX: box.left, clientY: box.top, currentTarget: mapHost, sourceEvent: null, pageX: 0, pageY: 0, x: box.left - host.left, y: box.top - host.top }, nameOf(d)); })
+      .on('focus', (event, d) => {
+        const box = event.currentTarget.getBoundingClientRect();
+        const host = mapHost.getBoundingClientRect();
+        showTipAt(nameOf(d), box.left - host.left + box.width / 2, box.top - host.top + box.height / 2);
+      })
       .on('blur', hideTip);
 
-    // states
     const states = svg.append('g').attr('class', 'q3-states')
       .selectAll('path').data(STATES.features).join('path')
       .attr('class', 'q3-state').attr('d', path).attr('stroke', '#ffffff').attr('stroke-width', 1);
     attachHover(states, (d) => d.properties.name);
 
-    // labels (abbreviation + count). Tasmania and the ACT are too small to hold text.
     const labelData = STATES.features
       .filter((f) => !['Tasmania', 'Australian Capital Territory'].includes(f.properties.name))
       .map((f) => ({ name: f.properties.name, xy: path.centroid(f) }));
@@ -142,7 +201,6 @@
     labels.append('tspan').attr('class', 'q3-abbr').attr('x', 0).text((d) => ABBR[d.name]);
     labels.append('tspan').attr('class', 'q3-value').attr('x', 0).attr('dy', '1.25em');
 
-    // Tasmania label sits below its shape
     const tas = STATES.features.find((f) => f.properties.name === 'Tasmania');
     const tasBox = path.bounds(tas);
     const tasLabel = svg.append('text').attr('class', 'q3-label-out').attr('text-anchor', 'middle')
@@ -162,42 +220,57 @@
     const insetValue = insetText.append('tspan').attr('class', 'q3-value').attr('x', insetXY[0]).attr('dy', '1.25em');
     attachHover(inset.selectAll('circle').data([act]), () => 'Australian Capital Territory');
 
-    // colour legend
+    // colour legend (stops and labels are refreshed whenever the selection changes)
     const legendW = 200;
-    const legendX = 20;
-    const legendY = height - 50;
-    const defs = svg.append('defs');
-    const gradient = defs.append('linearGradient').attr('id', 'q3-legend-gradient');
-    d3.range(0, 1.01, 0.1).forEach((t) => {
-      gradient.append('stop').attr('offset', `${t * 100}%`).attr('stop-color', colour(minCount + t * (maxCount - minCount)));
-    });
-    const legend = svg.append('g').attr('class', 'q3-legend').attr('transform', `translate(${legendX},${legendY})`);
-    legend.append('text').attr('class', 'q3-legend-title').attr('y', -8).text("Largest group's hospitalised count");
+    const gradient = svg.append('defs').append('linearGradient').attr('id', 'q3-legend-gradient');
+    const stops = gradient.selectAll('stop').data(d3.range(0, 1.01, 0.1)).join('stop')
+      .attr('offset', (t) => `${t * 100}%`);
+    const legend = svg.append('g').attr('class', 'q3-legend').attr('transform', `translate(20,${height - 50})`);
+    const legendTitle = legend.append('text').attr('class', 'q3-legend-title').attr('y', -8);
     legend.append('rect').attr('width', legendW).attr('height', 12).attr('fill', 'url(#q3-legend-gradient)').attr('stroke', '#b9c4b6');
-    legend.append('text').attr('class', 'q3-legend-tick').attr('y', 26).text(formatCount(minCount));
-    legend.append('text').attr('class', 'q3-legend-tick').attr('x', legendW).attr('y', 26).attr('text-anchor', 'end').text(formatCount(maxCount));
+    const legendMin = legend.append('text').attr('class', 'q3-legend-tick').attr('y', 26);
+    const legendMax = legend.append('text').attr('class', 'q3-legend-tick').attr('x', legendW).attr('y', 26).attr('text-anchor', 'end');
+    legend.append('rect').attr('x', legendW + 14).attr('width', 12).attr('height', 12).attr('fill', NO_DATA_FILL).attr('stroke', '#b9c4b6');
+    legend.append('text').attr('class', 'q3-legend-tick').attr('x', legendW + 32).attr('y', 10).text('n.p.');
+
+    const updateScale = () => {
+      const values = valuesFor(selection);
+      const [low, high] = values.length ? d3.extent(values) : [0, 1];
+      colour = d3.scaleSequentialSqrt(d3.interpolateYlGn).domain([low, high === low ? low + 1 : high]);
+      stops.attr('stop-color', (t) => colour(low + t * (high - low)));
+      legendTitle.text(selectionLabel(selection));
+      legendMin.text(formatCount(low));
+      legendMax.text(formatCount(high));
+    };
 
     const yearLabel = root.querySelector('#q3-year-label');
     const slider = root.querySelector('#q3-year-slider');
     const playButton = root.querySelector('#q3-play');
 
-    const draw = (year) => {
-      currentYear = year;
-      states.transition().duration(350).attr('fill', (d) => fillFor(d.properties.name))
-        .attr('aria-label', (d) => describe(d.properties.name));
+    const draw = () => {
+      states.transition().duration(350).attr('fill', (d) => fillFor(d.properties.name));
       states.attr('aria-label', (d) => describe(d.properties.name));
       labels.attr('fill', (d) => textColour(fillFor(d.name)));
-      labels.select('.q3-value').text((d) => { const row = rowFor(d.name); return row ? formatCount(row.count) : ''; });
-      const tasRow = rowFor('Tasmania');
-      tasLabel.text(tasRow ? `TAS ${formatCount(tasRow.count)}` : 'TAS');
-      const actRow = rowFor('Australian Capital Territory');
-      insetCircle.transition().duration(350).attr('fill', fillFor('Australian Capital Territory'));
-      insetText.attr('fill', textColour(fillFor('Australian Capital Territory')));
-      insetValue.text(actRow ? formatCount(actRow.count) : '');
-      yearLabel.textContent = year;
+      labels.select('.q3-value').text((d) => countCell(rowFor(d.name, currentYear, selection)));
+      tasLabel.text(`TAS ${countCell(rowFor('Tasmania', currentYear, selection))}`);
+      const actFill = fillFor('Australian Capital Territory');
+      insetCircle.transition().duration(350).attr('fill', actFill);
+      insetText.attr('fill', textColour(actFill));
+      insetValue.text(countCell(rowFor('Australian Capital Territory', currentYear, selection)));
+      yearLabel.textContent = currentYear;
     };
 
-    slider.addEventListener('input', () => draw(years[+slider.value]));
+    // ---------- events ----------
+    root.querySelector('#q3-user').addEventListener('change', (event) => {
+      selection = event.target.value;
+      updateScale();
+      draw();
+      buildTable();
+    });
+    slider.addEventListener('input', () => { currentYear = years[+slider.value]; draw(); });
+    yearASelect.addEventListener('change', buildTable);
+    yearBSelect.addEventListener('change', buildTable);
+
     let timer = null;
     const stop = () => { clearInterval(timer); timer = null; playButton.textContent = 'Play'; };
     playButton.addEventListener('click', () => {
@@ -205,11 +278,14 @@
       playButton.textContent = 'Pause';
       timer = setInterval(() => {
         slider.value = (+slider.value + 1) % years.length;
-        draw(years[+slider.value]);
+        currentYear = years[+slider.value];
+        draw();
       }, 900);
     });
 
-    draw(years[+slider.value]);
+    updateScale();
+    draw();
+    buildTable();
   };
 
   const init = async () => {
@@ -219,7 +295,7 @@
       let rows;
       try { rows = await d3.csv(DATA_URL); } catch (loadError) { rows = embeddedRows(); }
       const data = parseRows(rows);
-      if (!data.length) { throw new Error('No usable rows found in data/q3_map.csv.'); }
+      if (!data.length) { throw new Error('No usable rows found in data/q3_road_users.csv.'); }
       render(root, data);
     } catch (error) {
       root.innerHTML = `<p class="q3-error">Could not draw the Question 3 map. ${error.message}</p>`;
