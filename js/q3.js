@@ -4,7 +4,7 @@
 // Data: data/q3_map.csv  (columns: Group, RoadUser, Count, SharePct, Year)
 (() => {
   const TARGET_ID = 'q3-heatmap-chart';
-  const DATA_URL = 'data/q3_map.csv';
+  const DATA_URL = 'q3_jurisdiction_roadusers';
   const LEAFLET_JS = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';
   const LEAFLET_CSS = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css';
 
