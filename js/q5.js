@@ -5,7 +5,7 @@
   const CHART_ID = 'q5-chart';
   const CONTROLS_ID = 'q5-controls';
   const SUMMARY_ID = 'q5-summary';
-  const DATA_URL = 'data/q5_counterparty.csv';
+  const DATA_URL = 'data/q5_hospital_bed_days.csv';
 
   const formatCount = d3.format(',');
   const colour = d3.scaleOrdinal().range(['#315e42', '#d39c54', '#4f6f9a', '#a8664d']);
