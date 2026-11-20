@@ -1,31 +1,43 @@
-/* Question 5: bed-days line chart. Everything uses the q5- prefix. */
-#q5-controls { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; font-size: 14px; }
-.q5-metric { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; border: 0; }
-.q5-metric label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; }
-.q5-filters { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-.q5-filter { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+/* Question 5: bed-days line chart. Everything uses the q5- prefix.
+   Colours and fonts reuse the site's variables from style.css (with fallbacks). */
 
-#q5-chart { position: relative; width: 100%; max-width: 900px; margin: 12px auto 0; }
+#q5-controls { display: flex; flex-direction: column; gap: 12px; margin: 14px 0 6px; }
+
+.q5-metric { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0; padding: 0; border: 0; }
+.q5-metric label,
+.q5-filter {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  color: #4e5e53; font-family: var(--mono, monospace); font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+}
+.q5-metric input, .q5-filter input { accent-color: var(--green, #2d6449); }
+.q5-filters { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+
+#q5-chart { position: relative; width: 100%; max-width: 900px; margin: 14px auto 0; }
 #q5-chart svg { display: block; width: 100%; height: auto; }
 
 .q5-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 4px; }
-.q5-grid line { stroke: #e1e6dd; }
+
+.q5-grid line { stroke: var(--line, #dfe2da); }
 .q5-grid .domain { display: none; }
-.q5-axis-label { font-size: 12px; fill: #5a665d; }
+#q5-chart .tick text { fill: #536258; font-family: var(--sans, sans-serif); font-size: 11px; }
+.q5-axis-label { fill: #536258; font-family: var(--sans, sans-serif); font-size: 11px; }
 .q5-guide { stroke: #879088; stroke-dasharray: 3 3; pointer-events: none; }
+
+.q5-break-note { margin: 6px 0 0; color: var(--muted, #68716b); font-size: 12px; }
 
 .q5-tooltip {
   position: absolute; pointer-events: none; padding: 9px 12px;
-  background: #222; color: #fff; border-radius: 5px; font-size: 13px; line-height: 1.5; z-index: 5;
+  background: #202725; color: #fff; border-radius: 5px; font-size: 13px; line-height: 1.5; z-index: 5;
 }
 
 #q5-summary { margin: 14px 0 0; font-size: 14px; }
 
-.q5-table-wrap { overflow-x: auto; margin-top: 14px; }
+.q5-table-wrap { overflow-x: auto; margin-top: 16px; }
 .q5-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.q5-table caption { text-align: left; padding-bottom: 6px; color: #5a665d; }
-.q5-table th, .q5-table td { padding: 6px 8px; border-bottom: 1px solid #e1e6dd; text-align: left; white-space: nowrap; }
-.q5-table th { color: #315e42; font-weight: 700; }
+.q5-table caption { text-align: left; padding-bottom: 6px; color: var(--muted, #68716b); }
+.q5-table th, .q5-table td { padding: 6px 8px; border-bottom: 1px solid var(--line, #dfe2da); text-align: left; white-space: nowrap; }
+.q5-table thead th { color: var(--green, #2d6449); font-family: var(--mono, monospace); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
+.q5-table tbody th { color: var(--green, #2d6449); font-weight: 700; }
 .q5-table td.q5-num { text-align: right; }
 
 .q5-error { padding: 12px; border: 1px solid #e4cfc8; border-radius: 6px; background: #fffaf8; color: #865040; }

@@ -21,9 +21,12 @@
     average: { key: 'AvgBedDays', label: 'Average bed-days per case', axis: 'Average bed-days per hospitalised case', format: d3.format('.2f') }
   };
 
+  // Breaks in series from the workbook notes: Victoria from 2012, NSW from June 2017
+  const BREAKS = { 'Victoria': 2012, 'New South Wales': 2017 };
+
   const formatPct = d3.format('+.1%');
   const formatDiff = d3.format('+.2f');
-  const PALETTE = ['#315e42', '#d39c54', '#4f6f9a', '#a8664d', '#7a5c8f', '#2f8f9d', '#8a8f3a', '#c25b7a'];
+  const PALETTE = ['#2d6449', '#d39c54', '#4f6f9a', '#a8664d', '#7a5c8f', '#2f8f9d', '#8a8f3a', '#c25b7a'];
 
   // Draws the multi-series line chart for the chosen measure into #targetElementId.
   function renderQ5Chart(data, targetElementId, metricKey, visible, colour) {
@@ -74,7 +77,19 @@
       g.selectAll(null).data(sorted).join('circle')
         .attr('cx', (d) => x(+d.Calendar_year)).attr('cy', (d) => y(+d[metric.key]))
         .attr('r', 3).attr('fill', colour(name));
+      // hollow diamond where this jurisdiction's series changes
+      const breakRow = BREAKS[name] && sorted.find((d) => +d.Calendar_year === BREAKS[name]);
+      if (breakRow) {
+        g.append('path').attr('class', 'q5-break').attr('d', d3.symbol(d3.symbolDiamond, 120)())
+          .attr('transform', `translate(${x(BREAKS[name])},${y(+breakRow[metric.key])})`)
+          .attr('fill', '#ffffff').attr('stroke', colour(name)).attr('stroke-width', 2);
+      }
     });
+
+    if (series.some(([name]) => BREAKS[name])) {
+      root.append('p').attr('class', 'q5-break-note')
+        .text('◇ Break in series: Victoria from 2012 and NSW from June 2017 are not directly comparable with earlier years.');
+    }
 
     // hover: list every visible jurisdiction for the nearest year
     const tooltip = root.append('div').attr('class', 'q5-tooltip').style('opacity', 0);
@@ -89,7 +104,7 @@
           .filter(([, d]) => d)
           .sort((a, b) => +b[1][metric.key] - +a[1][metric.key]);
         tooltip.html(`<strong>${year}</strong> · ${metric.label}` + rows.map(([name, d]) =>
-          `<br><span class="q5-swatch" style="background:${colour(name)}"></span>${name}: ${metric.format(+d[metric.key])}`).join(''))
+          `<br><span class="q5-swatch" style="background:${colour(name)}"></span>${name}: ${metric.format(+d[metric.key])}${BREAKS[name] === year ? ' ◇ break in series' : ''}`).join(''))
           .style('opacity', 1)
           .style('left', `${Math.min(event.offsetX + 16, 520)}px`)
           .style('top', `${event.offsetY + 10}px`);
@@ -155,7 +170,11 @@
 
     try {
       let rows;
-      try { rows = await d3.csv(DATA_URL); } catch (loadError) { rows = embeddedRows(); }
+      try {
+        // loadDataset() comes from js/loadData.js (returns null on error); plain d3.csv is the backup
+        rows = typeof loadDataset === 'function' ? await loadDataset(DATA_URL) : await d3.csv(DATA_URL);
+      } catch (loadError) { rows = null; }
+      if (!rows || !rows.length) { rows = embeddedRows(); }
       rows = rows.map((d) => ({
         Jurisdiction: String(d.Jurisdiction).trim(),
         Calendar_year: +d.Calendar_year,
